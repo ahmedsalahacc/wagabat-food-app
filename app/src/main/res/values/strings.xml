@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">WAGBA</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="text_welcome">Welcome!</string>
+    <string name="text_slogan">SERVED HOT AND FAST</string>
+    <string name="text_welcome_message">
+        Welcome to Wagba! start by creating a new account if you are not already a user, or login to be served!
+    </string>
+    <string name="text_or">or</string>
+    <string name="text_signin">Sign-In</string>
+    <string name="text_signup">Sign-Up</string>
+    <string name="hint_mobile">Mobile</string>
+    <string name="btn_signup"><u>Sign-Up</u></string>
+    <string name="text_signin_describe">Sign-In to continue</string>
+    <string name="text_signup_describe">Sign-up to Wagba</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_repassword">Retype your password</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_forgot_password">Forgot password?</string>
+    <string name="text_alternative_login">or login with</string>
+</resources>
