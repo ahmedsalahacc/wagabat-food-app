@@ -1,4 +1,4 @@
-package com.ahmedsalah.wagabat;
+package com.ahmedsalah.wagabat.models;
 
 public class DishModel {
     private String name, imgAddress, description;

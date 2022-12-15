@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/signin"
-    tools:context=".SignUpFragment">
+    tools:context=".fragments.SignUpFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -103,7 +103,7 @@
                     android:paddingTop="20dp">
 
                     <Button
-                        android:id="@+id/signInBtn"
+                        android:id="@+id/btn_signIn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/black"
@@ -128,7 +128,7 @@
                         app:layout_constraintVertical_bias="0.727" />
 
                     <ImageView
-                        android:id="@+id/loginWithGoogle"
+                        android:id="@+id/img_loginWithGoogle"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_centerHorizontal="true"
@@ -140,7 +140,7 @@
                         app:layout_constraintVertical_bias="0.252" />
 
                     <TextView
-                        android:id="@+id/goToSignupBtn"
+                        android:id="@+id/txt_goToSignup"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/btn_signup"
@@ -160,10 +160,10 @@
                         android:textColor="@color/black"
                         android:text="@string/text_or"
                         app:layout_constraintBottom_toTopOf="@+id/alternativeMethods"
-                        app:layout_constraintEnd_toEndOf="@+id/signInBtn"
+                        app:layout_constraintEnd_toEndOf="@+id/btn_signIn"
                         app:layout_constraintHorizontal_bias="0.506"
-                        app:layout_constraintStart_toStartOf="@+id/signInBtn"
-                        app:layout_constraintTop_toBottomOf="@+id/signInBtn"
+                        app:layout_constraintStart_toStartOf="@+id/btn_signIn"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_signIn"
                         app:layout_constraintVertical_bias="0.087" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

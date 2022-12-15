@@ -1,4 +1,4 @@
-package com.ahmedsalah.wagabat;
+package com.ahmedsalah.wagabat.fragments;
 
 import android.os.Bundle;
 
@@ -10,6 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.ahmedsalah.wagabat.R;
+import com.ahmedsalah.wagabat.adapters.ResturantAdapter;
+import com.ahmedsalah.wagabat.models.ResturantModel;
 
 import java.util.ArrayList;
 import java.util.List;

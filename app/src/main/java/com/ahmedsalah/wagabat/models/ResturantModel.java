@@ -1,4 +1,4 @@
-package com.ahmedsalah.wagabat;
+package com.ahmedsalah.wagabat.models;
 
 public class ResturantModel {
     private String name, categoryClass, imgAddress;

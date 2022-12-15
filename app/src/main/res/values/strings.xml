@@ -20,6 +20,7 @@
     <string name="btn_login">Login</string>
     <string name="btn_forgot_password">Forgot password?</string>
     <string name="text_alternative_login">or login with</string>
+    <string name="text_alternative_register">or register with</string>
     <string name="title_activity_menu">MenuActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -42,11 +43,13 @@
     <string name="rest_delivery_price">Delivery Price</string>
 
     <!--    Account Items-->
+    <string name="account_cart">Cart</string>
     <string name="account_orders">Your orders</string>
     <string name="account_vouchers">Vouchers</string>
     <string name="account_pay">Payment Methods</string>
     <string name="account_help">Help</string>
     <string name="account_about">About</string>
+    <string name="account_logout">Logout</string>
 
     <!--    Search Items-->
     <string name="search_hint">Search for food, resturant, etc.</string>

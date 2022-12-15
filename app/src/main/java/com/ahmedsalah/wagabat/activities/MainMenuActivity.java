@@ -1,13 +1,17 @@
-package com.ahmedsalah.wagabat;
+package com.ahmedsalah.wagabat.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
+import com.ahmedsalah.wagabat.R;
+import com.ahmedsalah.wagabat.fragments.AccountFragment;
+import com.ahmedsalah.wagabat.fragments.HomeFragment;
+import com.ahmedsalah.wagabat.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MenuActivity extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity {
     BottomNavigationView bottomNavBar;
 
     @Override
@@ -20,7 +24,7 @@ public class MenuActivity extends AppCompatActivity {
 
     public void init(){
         bottomNavBar = findViewById(R.id.bottomNavigationView);
-        replaceFragment(new HomeFragment());
+        this.replaceFragment(new HomeFragment());
     }
 
     public void initEventListeners(){
@@ -41,7 +45,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void replaceFragment(Fragment frag){
-        getSupportFragmentManager().beginTransaction()
+        super.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout, frag).commit();
     }
 }

@@ -1,4 +1,4 @@
-package com.ahmedsalah.wagabat;
+package com.ahmedsalah.wagabat.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -6,6 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+
+import com.ahmedsalah.wagabat.R;
+import com.ahmedsalah.wagabat.adapters.DishAdapter;
+import com.ahmedsalah.wagabat.models.DishModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,21 +30,13 @@ public class ResturantActivity extends AppCompatActivity {
 
     public void init(){
         setUserList();
-        Log.i("mytag", "1");
         recyclerView = findViewById(R.id.dishes_recycler_view);
-        Log.i("mytag", "2");
         layoutManager = new LinearLayoutManager(this);
-        Log.i("mytag", "3");
         layoutManager.setOrientation(RecyclerView.VERTICAL);
-        Log.i("mytag", "4");
         recyclerView.setLayoutManager(layoutManager);
-        Log.i("mytag", "5");
         adapter = new DishAdapter(userList);
-        Log.i("mytag", "6");
         recyclerView.setAdapter(adapter);
-        Log.i("mytag", "77");
         adapter.notifyDataSetChanged();
-        Log.i("mytag", "8");
     }
 
     public void setUserList(){

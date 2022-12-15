@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray"
-    tools:context=".AccountFragment">
+    tools:context=".fragments.AccountFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -32,6 +32,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profile_pic_container"
                     android:layout_width="82dp"
+                    android:backgroundTint="@color/white"
                     android:layout_height="82dp"
                     app:cardCornerRadius="10dp">
 
@@ -72,66 +73,89 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="68dp"
+            android:layout_marginTop="48dp"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/cardView"
-            tools:layout_editor_absoluteX="39dp">
+            tools:layout_editor_absoluteX="16dp">
 
             <Button
                 android:id="@+id/account_orders"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginVertical="5dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:textColor="@color/black"
                 android:drawableLeft="@drawable/ic_orders"
                 android:gravity="center_vertical"
                 android:paddingVertical="1dp"
-                android:text="@string/account_orders" />
+                android:text="@string/account_orders"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/btn_cart"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginVertical="5dp"
+                android:drawableLeft="@drawable/ic_baseline_shopping_cart_24"
+                android:gravity="center_vertical"
+                android:paddingVertical="1dp"
+                android:text="@string/account_cart"
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/account_vouchers"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:textColor="@color/black"
                 android:layout_marginVertical="2dp"
                 android:drawableLeft="@drawable/ic_baseline_vouchers"
                 android:gravity="center_vertical"
-                android:text="@string/account_vouchers" />
+                android:text="@string/account_vouchers"
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/account_payment"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:textColor="@color/black"
                 android:layout_marginVertical="5dp"
                 android:drawableLeft="@drawable/ic_baseline_attach_money_24"
                 android:gravity="center_vertical"
-                android:text="@string/account_pay" />
+                android:text="@string/account_pay"
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/account_help"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:textColor="@color/black"
                 android:layout_marginVertical="5dp"
                 android:drawableLeft="@drawable/ic_baseline_help_24"
                 android:gravity="center_vertical"
-                android:text="@string/account_about" />
+                android:text="@string/account_about"
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/account_about"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginVertical="5dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:textColor="@color/black"
                 android:drawableLeft="@drawable/ic_baseline_about"
                 android:gravity="center_vertical"
-                android:text="@string/account_help" />
+                android:text="@string/account_help"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/btn_signout"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginVertical="5dp"
+                android:drawableLeft="@drawable/ic_baseline_logout_24"
+                android:gravity="center_vertical"
+                android:text="@string/account_logout"
+                android:textColor="@color/black" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

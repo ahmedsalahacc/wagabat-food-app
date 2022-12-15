@@ -1,4 +1,4 @@
-package com.ahmedsalah.wagabat;
+package com.ahmedsalah.wagabat.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,6 +9,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.ahmedsalah.wagabat.R;
+import com.ahmedsalah.wagabat.activities.ResturantActivity;
+import com.ahmedsalah.wagabat.models.ResturantModel;
 
 import java.util.List;
 

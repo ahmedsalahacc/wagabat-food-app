@@ -1,13 +1,16 @@
-package com.ahmedsalah.wagabat;
+package com.ahmedsalah.wagabat.fragments;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.ahmedsalah.wagabat.R;
 
 public class IntroFragment extends Fragment {
     View view;
@@ -23,18 +26,13 @@ public class IntroFragment extends Fragment {
         btnRegister = view.findViewById(R.id.goToSignup);
 
         // event listeners
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                replaceFragment(new LoginFragment());
-            }
+        btnSignIn.setOnClickListener(v->{
+            replaceFragment(new LoginFragment());
         });
-        btnRegister.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                replaceFragment(new SignUpFragment());
-            }
+        btnRegister.setOnClickListener(v->{
+            replaceFragment(new SignUpFragment());
         });
+
         return view;
     }
 
