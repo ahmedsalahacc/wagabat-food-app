@@ -20,4 +20,42 @@
     <string name="btn_login">Login</string>
     <string name="btn_forgot_password">Forgot password?</string>
     <string name="text_alternative_login">or login with</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="profile_username">Ahmed Salah Abdulmaksoud</string>
+    <string name="profile_mobile">+20 122 3145 678</string>
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="latest_offers">Latest Offers!</string>
+
+    <!--    Recycler View Resturant Item-->
+    <string name="rest_item_name">Resturant Name</string>
+    <string name="rest_item_class">Resturant Class</string>
+    <string name="rest_item_rating">Rating</string>
+    <string name="rest_avg_order_time">Order Time</string>
+    <string name="rest_delivery_price">Delivery Price</string>
+
+    <!--    Account Items-->
+    <string name="account_orders">Your orders</string>
+    <string name="account_vouchers">Vouchers</string>
+    <string name="account_pay">Payment Methods</string>
+    <string name="account_help">Help</string>
+    <string name="account_about">About</string>
+
+    <!--    Search Items-->
+    <string name="search_hint">Search for food, resturant, etc.</string>
+
+    <!--    Dish Item-->
+    <string name="dish_description">One Beef Sandwiches, 1 chicken sandwich, 6 chicken wings pieces served with your choice of sauce, waffle fries and 2 soda drinks</string>
+    <string name="currency">EGP</string>
+    <string name="dish_price">250.00</string>
+    <string name="place_order">Place Order</string>
+    <string name="special_requests">Any special request?</string>
+    <string name="sandwitch_name">Sandwitch Name</string>
 </resources>
