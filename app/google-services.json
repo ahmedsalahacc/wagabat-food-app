@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "391201027074",
+    "firebase_url": "https://wagabat-94f26-default-rtdb.firebaseio.com",
+    "project_id": "wagabat-94f26",
+    "storage_bucket": "wagabat-94f26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391201027074:android:84269c9ae2dfa9ea49631b",
+        "android_client_info": {
+          "package_name": "com.ahmedsalah.wagabat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391201027074-lteepic1slob6od861i8ms61v83id5i1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJAzLpA1TGuMFhZcdxjbAfvhINwQnX3V8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "391201027074-lteepic1slob6od861i8ms61v83id5i1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
