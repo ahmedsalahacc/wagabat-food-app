@@ -101,7 +101,7 @@ async function createNewResturantUser(
         name: name,
         email: email,
         img: img,
-        rating: Math.floor(Math.random() * (5 - 3 + 1) + 3).toFixed(1),
+        rating: (Math.random() * (4 - 3 + 1) + 3).toFixed(1),
         "delivery-price": deliveryPrice,
         "delivery-time": deliveryTime,
         category: category,
