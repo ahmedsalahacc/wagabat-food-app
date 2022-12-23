@@ -2,7 +2,9 @@ package com.ahmedsalah.wagabat.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -34,6 +36,8 @@ public class SignUpFragment extends Fragment{
     DatabaseReference dbRef;
     FirebaseAuth auth;
     FirebaseUser user;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +71,10 @@ public class SignUpFragment extends Fragment{
         // firebase objects
         auth = FirebaseAuth.getInstance();
         dbRef = FirebaseDatabase.getInstance().getReference();
+        Context context = getContext();
+        sharedPref = context.getSharedPreferences(context.getResources().getString(R.string.shared_pref_name),
+                getContext().MODE_PRIVATE);
+        editor = sharedPref.edit();
     }
 
     private void replaceFragment(Fragment newFragment) {
@@ -89,36 +97,48 @@ public class SignUpFragment extends Fragment{
 
         boolean isError = false;
 
+        if (name.isEmpty()){
+            isError=true;
+            nameField.setError("This field is required");
+        }
         if (!email.matches(emailRegexPattern)){
             isError=true;
-            emailField.setError("Email Pattern is incorrect");
+            emailField.setError("Email Pattern is incorrect or empty");
         }
         if(password.isEmpty()||password.length()<8){
             isError=true;
             passwordField.setError("Password length is less than 8 characters");
         }
-        if(!password.equals(rePassword)){
+        if(!password.equals(rePassword)||rePassword.isEmpty()){
             isError=true;
-            rePasswordField.setError("This doesn't match the input password");
+            rePasswordField.setError("Passwords must match and must not be empty");
         }
-
+        if(mobile.isEmpty() || mobile.length()!=11){
+            isError=true;
+            mobileField.setError("Mobile numbers must be 11 characters in length");
+        }
+        Log.d("login", "120");
         if(!isError){
             progressDialog.setMessage("Wait unitl registration is complete");
             progressDialog.setTitle("Registration");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
+
             // creating email and password with firebase
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task->{
                 if(task.isSuccessful()){
+                    Log.d("login", "here");
                     user = auth.getCurrentUser();
+                    editor.putString("uid", user.getUid());
+                    editor.apply();
                     addUserToFirebaseDB(user.getUid(), email, name, mobile);
+
                     progressDialog.dismiss();
                     Toast.makeText(view.getContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
                     replaceActivity(view, MainMenuActivity.class);
                 } else{
                     progressDialog.dismiss();
-                    Log.d("debugreg", ""+task.getException());
-                    Toast.makeText(view.getContext(), ""+task.getException(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), ""+task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }

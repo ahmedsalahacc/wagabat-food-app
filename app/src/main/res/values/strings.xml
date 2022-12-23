@@ -58,7 +58,8 @@
     <string name="dish_description">One Beef Sandwiches, 1 chicken sandwich, 6 chicken wings pieces served with your choice of sauce, waffle fries and 2 soda drinks</string>
     <string name="currency">EGP</string>
     <string name="dish_price">250.00</string>
-    <string name="place_order">Place Order</string>
+    <string name="place_order">Add to Cart</string>
     <string name="special_requests">Any special request?</string>
     <string name="sandwitch_name">Sandwitch Name</string>
+    <string name="shared_pref_name">uuidpref</string>
 </resources>

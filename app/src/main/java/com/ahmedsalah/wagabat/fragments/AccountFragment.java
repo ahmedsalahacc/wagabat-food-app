@@ -1,11 +1,14 @@
 package com.ahmedsalah.wagabat.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,8 @@ public class AccountFragment extends Fragment {
             paymentsBtn, helpBtn, aboutBtn, signoutBtn;
     FirebaseAuth auth;
     ProgressDialog progressDialog;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,14 +64,28 @@ public class AccountFragment extends Fragment {
         progressDialog = new ProgressDialog(view.getContext());
         //firebase objects
         auth = FirebaseAuth.getInstance();
+        Context context = getContext();
+        sharedPref = context.getSharedPreferences(context.getResources().getString(R.string.shared_pref_name),
+                getContext().MODE_PRIVATE);
+        editor = sharedPref.edit();
     }
+
+    private void replaceActivityAndClearTasl(Class activity){
+        Intent intent = new Intent(view.getContext(), activity);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        view.getContext().startActivity(intent);
+    }
+
     private void replaceActivity(Class activity){
-        view.getContext().startActivity(new Intent(view.getContext(), activity));
+        Intent intent = new Intent(view.getContext(), activity);
+        view.getContext().startActivity(intent);
     }
 
     private void signOut(){
         auth.signOut();
+        editor.remove("uid");
+        editor.apply();
         Toast.makeText(view.getContext(), "Signing you out", Toast.LENGTH_SHORT).show();
-        replaceActivity(MainActivity.class);
+        replaceActivityAndClearTasl(MainActivity.class);
     }
 }
