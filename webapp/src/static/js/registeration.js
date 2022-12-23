@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js";
 import {
   getDatabase,
   ref,
@@ -10,9 +9,7 @@ import {
   getAuth,
   onAuthStateChanged,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-// TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -35,7 +32,6 @@ let promiseHolder = async function () {};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const database = getDatabase(app);
 
@@ -71,6 +67,18 @@ document.getElementById("btn_submit").addEventListener("click", async (e) => {
   );
 });
 
+/**
+ * creates a new resturant user with the requested parameters
+ * handling the required authentication and database interfacing
+ * procedures
+ * @param {String} name
+ * @param {String} email
+ * @param {String} password
+ * @param {number} deliveryPrice
+ * @param {number} deliveryTime
+ * @param {String} category
+ * @param {String} img
+ */
 async function createNewResturantUser(
   name,
   email,

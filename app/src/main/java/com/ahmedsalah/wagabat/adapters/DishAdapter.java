@@ -26,6 +26,7 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView;
         private TextView nameView, priceView, descriptionView;
+        private final int maxCharsAllowed=60;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -43,7 +44,12 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.ViewHolder> {
         public void setData(String name, String imgAddress, String description, float price){
             nameView.setText(name);
             priceView.setText("EGP\t"+Float.toString(price));
-            descriptionView.setText(description);
+            if (description.length()<=this.maxCharsAllowed){
+                descriptionView.setText(description);
+            }else{
+                descriptionView.setText(description.substring(0,this.maxCharsAllowed)+"...");
+            }
+
         }
     }
 

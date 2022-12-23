@@ -62,4 +62,15 @@
     <string name="special_requests">Any special request?</string>
     <string name="sandwitch_name">Sandwitch Name</string>
     <string name="shared_pref_name">uuidpref</string>
+
+    <!--Cart-->
+    <string name="cart_title">Orders Basket</string>
+    <string name="cart_checkout">Checkout</string>
+    <string name="cart_cancel">Cancel</string>
+    <string name="cart_delivery_subtotal">delivery subtotal:</string>
+    <string name="cart_items_subtotal">items subtotal:</string>
+    <string name="cart_items_grandtotal">Total:</string>
+
+    <!--orders history-->
+    <string name="ohistory_title">Orders History</string>
 </resources>

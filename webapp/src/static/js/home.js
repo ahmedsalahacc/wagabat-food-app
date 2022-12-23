@@ -60,6 +60,9 @@ document.getElementById("submit").addEventListener("click", (e) => {
   addDishToResturant(restId, name, desc, price, img);
 });
 
+/**
+ * generates UUIDV4 string
+ */
 function uuidv4() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
     (
@@ -69,10 +72,17 @@ function uuidv4() {
   );
 }
 
+/**  */
 function updateOrdersState() {}
 
+/**
+ *
+ */
 function updatePreviousOrdersState() {}
 
+/**
+ *
+ */
 async function addDishToResturant(rid, dishName, dishDesc, dishPrice, dishImg) {
   // creating nodes for user in realtime db
   const id = uuidv4();
@@ -92,6 +102,9 @@ async function addDishToResturant(rid, dishName, dishDesc, dishPrice, dishImg) {
   });
 }
 
+/**
+ *
+ */
 function updateResturantWelcomeState() {
   const path = "resturants/" + restId + "/name";
   get(child(ref(database), path))
