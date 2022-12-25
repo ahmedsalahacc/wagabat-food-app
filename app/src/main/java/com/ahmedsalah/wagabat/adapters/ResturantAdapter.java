@@ -36,6 +36,7 @@ public class ResturantAdapter extends RecyclerView.Adapter<ResturantAdapter.View
         private TextView nameView, categoryClassView, deliveryPriceView, deliveryTimeView, ratingView;
         private View view;
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
@@ -65,15 +66,12 @@ public class ResturantAdapter extends RecyclerView.Adapter<ResturantAdapter.View
                     .into(imageView);
 
         }
-    }
+    } // end of holder class
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurant_item, parent, false);
-        view.setOnClickListener((v)->{
-            parent.getContext().startActivity(new Intent(parent.getContext(), ResturantActivity.class));
-        });
         return new ViewHolder(view);
     }
 
@@ -86,8 +84,21 @@ public class ResturantAdapter extends RecyclerView.Adapter<ResturantAdapter.View
         Float deliveryPrice = item.getDeliveryPrice();
         Float rating = item.getRating();
         int deliveryTime = item.getDeliveryTime();
+
         try {
             holder.setData(name, categoryClass, rating, imgAddress, deliveryPrice, deliveryTime);
+
+            holder.view.setOnClickListener((v)->{
+                Intent intent = new Intent(v.getContext(), ResturantActivity.class);
+                intent.putExtra("id", item.getId());
+                intent.putExtra("name", name);
+                intent.putExtra("category", categoryClass);
+                intent.putExtra("img", imgAddress);
+                intent.putExtra("deliveryPrice", deliveryPrice.toString());
+                intent.putExtra("rating", rating.toString());
+                intent.putExtra("deliveryTime", Integer.toString(deliveryTime));
+                v.getContext().startActivity(intent);
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }

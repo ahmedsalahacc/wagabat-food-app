@@ -22,6 +22,7 @@
             app:cardCornerRadius="10dp"
             >
             <ImageView
+                android:background="@color/white"
                 android:id="@+id/dish_item_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

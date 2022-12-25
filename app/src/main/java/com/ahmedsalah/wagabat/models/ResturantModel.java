@@ -1,11 +1,12 @@
 package com.ahmedsalah.wagabat.models;
 
 public class ResturantModel {
-    private String name, categoryClass, imgAddress;
+    private String name, categoryClass, imgAddress, id;
     private Float deliveryPrice, rating;
     private int deliveryTime;
 
-    public ResturantModel(String name, String categoryClass, Float rating, String imgAddress, Float deliveryPrice, int deliveryTime) {
+    public ResturantModel(String id, String name, String categoryClass, Float rating, String imgAddress, Float deliveryPrice, int deliveryTime) {
+        this.id = id;
         this.name = name;
         this.categoryClass = categoryClass;
         this.rating = rating;
@@ -13,6 +14,8 @@ public class ResturantModel {
         this.deliveryPrice = deliveryPrice;
         this.deliveryTime = deliveryTime;
     }
+    public void setId(String id){this.id=id;}
+    public String getId(){return this.id;}
 
     public void setName(String name) {
         this.name = name;

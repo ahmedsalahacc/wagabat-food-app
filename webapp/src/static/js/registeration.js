@@ -44,18 +44,26 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
+// initialize UI components
+const emailContainer = document.getElementById("input_email");
+const passwordContainer = document.getElementById("input_password");
+const delPriceContainer = document.getElementById("input_delivery_price");
+const delTimeContainer = document.getElementById("input_delivery_time");
+const categoryContainer = document.getElementById("input_category");
+const imgContainer = document.getElementById("input_rest_img");
+const nameContainer = document.getElementById("input_name");
+
+// event listeners
 document.getElementById("btn_submit").addEventListener("click", async (e) => {
   e.preventDefault();
-  const email = document.getElementById("input_email").value;
-  const password = document.getElementById("input_password").value;
-  const delPrice = document.getElementById("input_delivery_price").value;
-  const delTime = document.getElementById("input_delivery_time").value;
-  const category = document.getElementById("input_category").value;
-  const img = document.getElementById("input_rest_img").value;
-  const name = document.getElementById("input_name").value;
+  const email = emailContainer.value;
+  const password = passwordContainer.value;
+  const delPrice = delPriceContainer.value;
+  const delTime = delTimeContainer.value;
+  const category = categoryContainer.value;
+  const img = imgContainer.value;
+  const name = nameContainer.value;
 
-  console.log("email", email);
-  console.log("password", password);
   promiseHolder = createNewResturantUser(
     name,
     email,
@@ -106,6 +114,12 @@ async function createNewResturantUser(
         "delivery-time": deliveryTime,
         category: category,
       });
+    })
+    .then(() => {
+      nameContainer.value = "";
+      imgContainer.value = "";
+      delPriceContainer.value = "";
+      passwordContainer.value = "";
     })
     .catch((error) => {
       const errorCode = error.code;

@@ -51,12 +51,18 @@ document.getElementById("btn_logout").addEventListener("click", (e) => {
     });
 });
 
+// UI container
+const nameContainer = document.getElementById("input_dishname");
+const descContainer = document.getElementById("input_dishdesc");
+const priceContainer = document.getElementById("input_price");
+const imgContainer = document.getElementById("input_dishimg");
+
 document.getElementById("submit").addEventListener("click", (e) => {
   e.preventDefault();
-  const name = document.getElementById("input_dishname").value;
-  const desc = document.getElementById("input_dishdesc").value;
-  const price = document.getElementById("input_price").value;
-  const img = document.getElementById("input_dishimg").value;
+  const name = nameContainer.value;
+  const desc = descContainer.value;
+  const price = priceContainer.value;
+  const img = imgContainer.value;
   addDishToResturant(restId, name, desc, price, img);
 });
 
@@ -94,12 +100,19 @@ async function addDishToResturant(rid, dishName, dishDesc, dishPrice, dishImg) {
     description: dishDesc,
     img: dishImg,
     price: dishPrice,
-  }).then(async () => {
-    // creating nodes for user in realtime db
-    await set(ref(database, pathRest), {
-      id: id,
+  })
+    .then(async () => {
+      // creating nodes for user in realtime db
+      await set(ref(database, pathRest), {
+        id: id,
+      });
+    })
+    .then(() => {
+      nameContainer.value = "";
+      priceContainer.value = "";
+      descContainer.value = "";
+      imgContainer.value = "";
     });
-  });
 }
 
 /**

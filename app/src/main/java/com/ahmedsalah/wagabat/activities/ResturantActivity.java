@@ -7,11 +7,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmedsalah.wagabat.R;
 import com.ahmedsalah.wagabat.adapters.DishAdapter;
 import com.ahmedsalah.wagabat.models.DishModel;
 import com.ahmedsalah.wagabat.models.ResturantModel;
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ResturantActivity extends AppCompatActivity {
 
@@ -27,7 +33,10 @@ public class ResturantActivity extends AppCompatActivity {
     DishAdapter adapter;
     LinearLayoutManager layoutManager;
     DatabaseReference database;
-    List<DishModel> userList;
+    List<DishModel> dishesList;
+    ImageView imgView;
+    TextView restName, category, rating,
+            deliveryTime, deliveryCost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,31 +45,93 @@ public class ResturantActivity extends AppCompatActivity {
         init();
     }
 
-    public void init(){
-        setUserList();
-        //recycler view
+    public void init() {
+        // bind UI XML
+        restName = findViewById(R.id.rest_item_name);
+        category = findViewById(R.id.rest_item_category);
+        rating = findViewById(R.id.rest_item_rating);
+        deliveryTime = findViewById(R.id.rest_delivery_time);
+        deliveryCost = findViewById(R.id.rest_delivery_price);
+        imgView = findViewById(R.id.res_img);
+
+        // recycler view
+        dishesList = new ArrayList<>();
         recyclerView = findViewById(R.id.dishes_recycler_view);
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new DishAdapter(userList);
+        adapter = new DishAdapter(dishesList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        //database
-        // database = FirebaseDatabase.getInstance().getReference("");
+
+        // bundle
+        Bundle extras = getIntent().getExtras();
+        if(extras==null){
+            Log.e("extrasnull", extras.toString());
+            return;
+        }
+        String id = extras.getString("id");
+        setResturantCardFromBundle(extras);
+
+        // database
+        database = FirebaseDatabase.getInstance().getReference("resturants/"+id+"/dishes");
+        listenToRTDatabaseChanges();
     }
 
+    public void listenToRTDatabaseChanges() {
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dishesList.clear();
+                DatabaseReference dishesDatabase;
 
+                for (DataSnapshot each : snapshot.getChildren()) {
+                    Map<String, Object> jsonObj = (Map<String, Object>) each.getValue();
+                     dishesDatabase = FirebaseDatabase.getInstance().getReference("dishes/"+each.getKey());
+                     dishesDatabase.addValueEventListener(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot sshot) {
+                             Map<String, Object> jsonObj = (Map<String, Object>) sshot.getValue();
 
-    public void setUserList(){
-        userList = new ArrayList<>();
-        userList.add(new DishModel("0","Sandwitch", "#", getResources().getString(R.string.dish_description), 200f));
-        userList.add(new DishModel("1","Pizza", "#", getResources().getString(R.string.dish_description), 100f));
-        userList.add(new DishModel("2","Koshary", "#", getResources().getString(R.string.dish_description), 50f));
-        userList.add(new DishModel("3","Spagetti", "#", getResources().getString(R.string.dish_description), 20f));
-        userList.add(new DishModel("4","Crepe", "#", getResources().getString(R.string.dish_description), 40f));
-        userList.add(new DishModel("5","Nutella Waffle", "#", getResources().getString(R.string.dish_description), 60f));
-        userList.add(new DishModel("6","Cinnabon", "#", getResources().getString(R.string.dish_description), 80f));
-        userList.add(new DishModel("7","GODZILLA", "#", getResources().getString(R.string.dish_description), 800f));
+                             DishModel dish = new DishModel(
+                                     sshot.getKey().toString(),
+                                     jsonObj.get("name").toString(),
+                                     jsonObj.get("img").toString(),
+                                     jsonObj.get("description").toString(),
+                                     Float.parseFloat(jsonObj.get("price").toString())
+                             );
+                             dishesList.add(dish);
+                             adapter.notifyDataSetChanged();
+                         }
+
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError error) {
+
+                         }
+                     });
+//
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ResturantActivity.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
+
+    public void setResturantCardFromBundle(Bundle bundle){
+        Glide.with(this)
+                .load(bundle.getString("img"))
+                .placeholder(R.drawable.ic_launcher_background)
+                .override(400, 400)
+                .into(imgView);
+        restName.setText(bundle.getString("name"));
+        category.setText(bundle.getString("category"));
+        deliveryCost.setText("EGP "+bundle.getString("deliveryPrice"));
+        deliveryTime.setText(bundle.getString("deliveryTime")+" mins");
+        rating.setText(bundle.getString("rating"));
+    }
+
 }

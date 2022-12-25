@@ -48,7 +48,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void init(){
-//        setUserList();
         resturantsList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.rest_recyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -67,9 +66,9 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 resturantsList.clear();
                 for(DataSnapshot each:snapshot.getChildren()){
-                    Log.d("restd","calling");
                     Map<String, Object> jsonObj = (Map<String, Object>)each.getValue();
                     ResturantModel rest = new ResturantModel(
+                            each.getKey(),
                             jsonObj.get("name").toString(),
                             jsonObj.get("category").toString(),
                             Float.parseFloat(jsonObj.get("rating").toString()),
@@ -87,17 +86,5 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(view.getContext(), ""+error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void setUserList(){
-        resturantsList.add(new ResturantModel("Ma7shy w 7agat", "Oriental",4.8f,"#",11.54f,100));
-        resturantsList.add(new ResturantModel("Crepito", "Fast Food",4.1f,"#",7f,30));
-        resturantsList.add(new ResturantModel("Sandwitch Wegry", "Fast Food",4.1f,"#",7f,30));
-        resturantsList.add(new ResturantModel("Gamoosa Burgers", "Fast Food",4.5f,"#",15f,45));
-        resturantsList.add(new ResturantModel("Moshi Sushi", "Sea Food",4.9f,"#",20f,51));
-        resturantsList.add(new ResturantModel("Asmak Elarmooty", "Sea Food",3.8f,"#",4f,120));
-        resturantsList.add(new ResturantModel("Koshary ElMidan", "Fast Food",4.2f,"#",5.30f,15));
-        resturantsList.add(new ResturantModel("", "Fast Food",4.1f,"#",7f,30));
-        resturantsList.add(new ResturantModel("Sandwitch Wegry", "Fast Food",4.1f,"#",7f,30));
     }
 }
