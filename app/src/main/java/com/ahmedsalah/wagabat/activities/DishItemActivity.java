@@ -2,6 +2,8 @@ package com.ahmedsalah.wagabat.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -10,16 +12,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ahmedsalah.wagabat.R;
+import com.ahmedsalah.wagabat.models.Item;
+import com.ahmedsalah.wagabat.utils.OrdersCart;
 import com.bumptech.glide.Glide;
 
 public class DishItemActivity extends AppCompatActivity {
 
-    int currentCount=1;
-    String id;
+    int quantity =1;
+    String dishId, resturantId;
     TextView dishNameView, descriptionView, priceView, qtyTextView;
     Button qtyDecrementBtn, qtyIncrementBtn, addToCartBtn;
     EditText specialRequestEdit;
     ImageView imgView;
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +33,17 @@ public class DishItemActivity extends AppCompatActivity {
         init();
         manageQtyManipulation(qtyIncrementBtn, qtyDecrementBtn, qtyTextView);
         initializeComponentsDataFromIntent();
+        manageAddToCartButton();
     }
 
     public void init(){
+        sharedPref = getSharedPreferences("uuidpref", Context.MODE_PRIVATE);
         // text views
         dishNameView = findViewById(R.id.title);
         descriptionView = findViewById(R.id.description);
         priceView = findViewById(R.id.price);
         qtyTextView = findViewById(R.id.qty_textView);
-        qtyTextView.setText(Integer.toString(currentCount));
+        qtyTextView.setText(Integer.toString(quantity));
         // buttons
         qtyIncrementBtn = findViewById(R.id.qty_increment);
         qtyDecrementBtn = findViewById(R.id.qty_decrement);
@@ -49,15 +56,22 @@ public class DishItemActivity extends AppCompatActivity {
 
     public void manageQtyManipulation(Button btnIncrement, Button btnDecrement, TextView qtyTextView){
         btnIncrement.setOnClickListener(v->{
-            currentCount++;
-            qtyTextView.setText(Integer.toString(currentCount));
+            quantity++;
+            qtyTextView.setText(Integer.toString(quantity));
         });
 
         btnDecrement.setOnClickListener(v->{
-            if(currentCount>1){
-                currentCount--;
-                qtyTextView.setText(Integer.toString(currentCount));
+            if(quantity >1){
+                quantity--;
+                qtyTextView.setText(Integer.toString(quantity));
             }
+        });
+    }
+
+    public void manageAddToCartButton(){
+        addToCartBtn.setOnClickListener(v->{
+            addToCart();
+            Log.d("cartt", OrdersCart.getInstance().getOrders().toString());
         });
     }
 
@@ -69,7 +83,8 @@ public class DishItemActivity extends AppCompatActivity {
             return;
         }
         // initialize components
-        id = extras.getString("id");
+        dishId = extras.getString("dish_id");
+        resturantId = extras.getString("rest_id");
         dishNameView.setText(extras.getString("name"));
         priceView.setText(Float.toString(extras.getFloat("price")));
         descriptionView.setText(extras.getString("desc"));
@@ -78,5 +93,23 @@ public class DishItemActivity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_launcher_background)
                 .override(400, 400)
                 .into(imgView);
+    }
+
+    public void addToCart(){
+        Log.d("cartt", resturantId+"||"+OrdersCart.getInstance().getCurrentResturantId());
+        if(OrdersCart.getInstance().getCurrentResturantId()!=null &&
+                !OrdersCart.getInstance().getCurrentResturantId().equals(resturantId)){
+            OrdersCart.getInstance().reset();
+        }
+        String userId = sharedPref.getString("uid", null);
+        Item item = new Item(
+                dishId,
+                quantity,
+                resturantId,
+                userId,
+                specialRequestEdit.getText().toString()
+        );
+        OrdersCart.getInstance().addOrder(item);
+        OrdersCart.getInstance().setCurrentResturantId(resturantId);
     }
 }

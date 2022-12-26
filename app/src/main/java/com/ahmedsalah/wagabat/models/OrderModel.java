@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class OrderModel {
+
     public enum Status{
         CREATED,
         WAITING_FOR_APPROVAL,
@@ -15,36 +16,11 @@ public class OrderModel {
         DELIVERING
     }
 
-    public class Item{
-        public DishModel dish;
-        public int count;
-
-        public Item(DishModel dish, int count){
-            this.dish = dish;
-            this.count = count;
-        }
-    }
-
-    public class DishesHolder{
-        ArrayList<Item> dishItems;
-
-        public DishesHolder(){
-            dishItems = new ArrayList<>();
-        }
-
-        public void addDish(DishModel dish, int count){
-            dishItems.add(new Item(dish, count));
-        }
-
-        public Item getDish(int idx){
-            return dishItems.get(idx);
-        }
-    }
     private String resturantID;
     private String userID;
     private String id;
     private Status status;
-    private DishesHolder dishItemsHolder;
+    private ArrayList<Item> itemsList;
     private LocalDateTime datetime;
 
     public OrderModel(String resturantID, String userID){
@@ -66,4 +42,5 @@ public class OrderModel {
         }
         changeStatus(Status.WAITING_FOR_APPROVAL);
     }
+
 }

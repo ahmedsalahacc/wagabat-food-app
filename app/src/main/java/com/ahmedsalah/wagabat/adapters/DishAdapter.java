@@ -80,7 +80,8 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.ViewHolder> {
 
         holder.view.setOnClickListener((v)->{
             Intent intent = new Intent(v.getContext(), DishItemActivity.class);
-            intent.putExtra("id", id);
+            intent.putExtra("dish_id", id);
+            intent.putExtra("rest_id", item.getResturantId());
             intent.putExtra("name", name);
             intent.putExtra("desc", description);
             intent.putExtra("img", imgAddress);

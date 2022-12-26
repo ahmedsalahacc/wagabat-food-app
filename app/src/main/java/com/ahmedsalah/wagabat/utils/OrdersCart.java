@@ -1,5 +1,6 @@
 package com.ahmedsalah.wagabat.utils;
 
+import com.ahmedsalah.wagabat.models.Item;
 import com.ahmedsalah.wagabat.models.OrderModel;
 import java.util.ArrayList;
 
@@ -9,10 +10,11 @@ import java.util.ArrayList;
  * */
 public class OrdersCart {
     private static OrdersCart instance;
-    private ArrayList<OrderModel> orders;
+    private ArrayList<Item> orderItems;
+    private String currentResturantId;
 
     private OrdersCart(){
-        orders = new ArrayList<>();
+        orderItems = new ArrayList<>();
     }
 
     /**
@@ -29,15 +31,22 @@ public class OrdersCart {
      * gets the orders saved in the cart
      * @return orders saved in the cart
      * */
-    synchronized public ArrayList<OrderModel> getOrders(){
-        return this.orders;
+    synchronized public ArrayList<Item> getOrders(){
+        return this.orderItems;
     }
 
     /**
-     * adds an order to the cart
-     * @param order order to add
-     * */
-    synchronized public void addOrder(OrderModel order){
-        this.orders.add(order);
+     *  add orderItem to the cart
+     * @param orderItem orderItem to add
+     */
+    synchronized public void addOrder(Item orderItem){
+        this.orderItems.add(orderItem);
+    }
+
+    synchronized public void setCurrentResturantId(String id){this.currentResturantId = id;}
+    synchronized  public String getCurrentResturantId(){return this.currentResturantId;}
+
+    synchronized public void reset(){
+        this.orderItems.clear();
     }
 }

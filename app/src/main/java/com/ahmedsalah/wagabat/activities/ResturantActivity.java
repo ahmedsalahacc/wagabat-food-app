@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ResturantActivity extends AppCompatActivity {
-
+    String resturantId;
     RecyclerView recyclerView;
     DishAdapter adapter;
     LinearLayoutManager layoutManager;
@@ -70,11 +70,11 @@ public class ResturantActivity extends AppCompatActivity {
             Log.e("extrasnull", extras.toString());
             return;
         }
-        String id = extras.getString("id");
+        resturantId = extras.getString("id");
         setResturantCardFromBundle(extras);
 
         // database
-        database = FirebaseDatabase.getInstance().getReference("resturants/"+id+"/dishes");
+        database = FirebaseDatabase.getInstance().getReference("resturants/"+resturantId+"/dishes");
         listenToRTDatabaseChanges();
     }
 
@@ -98,7 +98,8 @@ public class ResturantActivity extends AppCompatActivity {
                                      jsonObj.get("name").toString(),
                                      jsonObj.get("img").toString(),
                                      jsonObj.get("description").toString(),
-                                     Float.parseFloat(jsonObj.get("price").toString())
+                                     Float.parseFloat(jsonObj.get("price").toString()),
+                                     resturantId
                              );
                              dishesList.add(dish);
                              adapter.notifyDataSetChanged();
