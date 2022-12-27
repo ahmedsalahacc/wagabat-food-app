@@ -15,8 +15,8 @@
         android:background="@color/white"
         >
         <androidx.cardview.widget.CardView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:id="@+id/img_holder"
             android:layout_alignParentRight="true"
             app:cardCornerRadius="10dp"
@@ -31,6 +31,7 @@
         </androidx.cardview.widget.CardView>
 
         <RelativeLayout
+            android:id="@+id/container_all"
             android:layout_width="200sp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -56,16 +57,26 @@
                 android:textColor="@android:color/black"
                 />
             <TextView
-                android:id="@+id/dish_item_description"
-                android:layout_width="match_parent"
+                android:id="@+id/resturant_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxWidth="250dp"
                 android:textSize="12sp"
-                android:text="@string/dish_description"
+                android:text="ResturantName"
                 android:layout_below="@+id/dish_item_price"
                 android:textColor="@color/dark_gray"
                 />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/container_all"
+            android:layout_centerVertical="true"
+            android:textColor="@color/dark"
+            android:textSize="20sp"
+            android:text="x1" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

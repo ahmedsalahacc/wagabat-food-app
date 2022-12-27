@@ -3,13 +3,16 @@ package com.ahmedsalah.wagabat.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmedsalah.wagabat.R;
 import com.ahmedsalah.wagabat.models.Item;
@@ -71,7 +74,9 @@ public class DishItemActivity extends AppCompatActivity {
     public void manageAddToCartButton(){
         addToCartBtn.setOnClickListener(v->{
             addToCart();
-            Log.d("cartt", OrdersCart.getInstance().getOrders().toString());
+            Log.d("cartcontent", OrdersCart.getInstance().getOrders().toString());
+            Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
+//            replaceActivity(MainMenuActivity.class);
         });
     }
 
@@ -112,4 +117,12 @@ public class DishItemActivity extends AppCompatActivity {
         OrdersCart.getInstance().addOrder(item);
         OrdersCart.getInstance().setCurrentResturantId(resturantId);
     }
+
+    private void replaceActivity(Class activityClass){
+        Intent intent = new Intent(this, activityClass);
+//        intent.putExtra("id", resturantId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
+    }
+
 }

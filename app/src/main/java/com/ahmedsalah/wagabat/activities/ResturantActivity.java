@@ -16,6 +16,7 @@ import com.ahmedsalah.wagabat.R;
 import com.ahmedsalah.wagabat.adapters.DishAdapter;
 import com.ahmedsalah.wagabat.models.DishModel;
 import com.ahmedsalah.wagabat.models.ResturantModel;
+import com.ahmedsalah.wagabat.utils.OrdersCart;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
