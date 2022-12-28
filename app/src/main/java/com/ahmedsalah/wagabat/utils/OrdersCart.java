@@ -47,6 +47,7 @@ public class OrdersCart {
     synchronized  public String getCurrentResturantId(){return this.currentResturantId;}
 
     synchronized public void reset(){
+        this.currentResturantId = null;
         this.orderItems.clear();
     }
 }

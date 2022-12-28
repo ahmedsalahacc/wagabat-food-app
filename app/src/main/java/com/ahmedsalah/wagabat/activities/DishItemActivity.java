@@ -105,6 +105,7 @@ public class DishItemActivity extends AppCompatActivity {
         if(OrdersCart.getInstance().getCurrentResturantId()!=null &&
                 !OrdersCart.getInstance().getCurrentResturantId().equals(resturantId)){
             OrdersCart.getInstance().reset();
+            Toast.makeText(this, "New Restaurant => Cart Cleared", Toast.LENGTH_SHORT).show();
         }
         String userId = sharedPref.getString("uid", null);
         Item item = new Item(

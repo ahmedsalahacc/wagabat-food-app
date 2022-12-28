@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -42,6 +43,7 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
         init();
         populateCart();
+        handleBtns();
         itemSubTotalView.setText(Float.toString(dishesSubTotal));
         totalView.setText(Float.toString(dishesSubTotal+deliverySubTotal));
     }
@@ -70,6 +72,9 @@ public class CartActivity extends AppCompatActivity {
     public void populateCart(){
         ArrayList<Item> itemsList = OrdersCart.getInstance().getOrders();
         String restId = OrdersCart.getInstance().getCurrentResturantId();
+        if (restId==null){
+            return;
+        }
         databaseNameRef =
                 FirebaseDatabase.getInstance().
                 getReference("resturants/"+restId);
@@ -129,8 +134,29 @@ public class CartActivity extends AppCompatActivity {
 
     }
 
+    private void handleBtns(){
+        cancelBtn.setOnClickListener(v->{
+            OrdersCart.getInstance().reset();
+            replaceActivity(MainMenuActivity.class);
+        });
+
+        checkoutBtn.setOnClickListener(v->{
+            handleCheckoutClick();
+        });
+    }
+
+    private void handleCheckoutClick(){
+
+    }
+
     private void notifyTotalPriceChanged(){
         totalView.setText(Float.toString(deliverySubTotal+dishesSubTotal));
         itemSubTotalView.setText(Float.toString(dishesSubTotal));
+    }
+
+    private void replaceActivity(Class activityClass){
+        Intent intent = new Intent(this, activityClass);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
     }
 }

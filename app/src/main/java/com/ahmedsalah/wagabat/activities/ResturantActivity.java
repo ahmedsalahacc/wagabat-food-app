@@ -46,7 +46,7 @@ public class ResturantActivity extends AppCompatActivity {
         init();
     }
 
-    public void init() {
+    private void init() {
         // bind UI XML
         restName = findViewById(R.id.rest_item_name);
         category = findViewById(R.id.rest_item_category);
@@ -79,7 +79,7 @@ public class ResturantActivity extends AppCompatActivity {
         listenToRTDatabaseChanges();
     }
 
-    public void listenToRTDatabaseChanges() {
+    private void listenToRTDatabaseChanges() {
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -123,7 +123,7 @@ public class ResturantActivity extends AppCompatActivity {
 
     }
 
-    public void setResturantCardFromBundle(Bundle bundle){
+    private void setResturantCardFromBundle(Bundle bundle){
         Glide.with(this)
                 .load(bundle.getString("img"))
                 .placeholder(R.drawable.ic_launcher_background)

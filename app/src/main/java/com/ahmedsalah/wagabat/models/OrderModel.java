@@ -13,7 +13,7 @@ public class OrderModel {
         CREATED,
         WAITING_FOR_APPROVAL,
         PREPARING,
-        DELIVERING
+        DELIVERED
     }
 
     private String resturantID;
@@ -28,6 +28,19 @@ public class OrderModel {
         status = Status.CREATED;
         this.userID = userID;
         this.resturantID = resturantID;
+    }
+
+    public static String getStringForStatus(OrderModel.Status status){
+        switch(status){
+            case WAITING_FOR_APPROVAL:
+                return "Waiting for approval";
+            case PREPARING:
+                return "Preparing";
+            case DELIVERED:
+                return "Delivered";
+            default:
+                return "created";
+        }
     }
 
     public void changeStatus(Status status){
