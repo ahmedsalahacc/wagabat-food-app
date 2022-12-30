@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,17 +22,20 @@ import android.widget.Toast;
 
 import com.ahmedsalah.wagabat.R;
 import com.ahmedsalah.wagabat.activities.MainMenuActivity;
+import com.ahmedsalah.wagabat.db.databases.UserDatabase;
+import com.ahmedsalah.wagabat.db.entities.User;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.List;
+
 public class SignUpFragment extends Fragment{
 
     Button btnSignUp;
-    ImageView googleImg;
-    EditText nameField, emailField, passwordField, mobileField, rePasswordField;
+    EditText nameField, emailField, passwordField, mobileField, rePasswordField, addressField;
     String emailRegexPattern = "[a-zA-Z0-9]+@[a-z]+\\.+[a-z]+";
     ProgressDialog progressDialog;
     DatabaseReference dbRef;
@@ -47,14 +52,10 @@ public class SignUpFragment extends Fragment{
 
         initComponents(view);
         // event listeners
-        googleImg.setOnClickListener(v->{
-            Toast.makeText(view.getContext(), "reg with google", Toast.LENGTH_SHORT).show();
-        });
         btnSignUp.setOnClickListener(v->{
 //            Toast.makeText(view.getContext(), "signing up", Toast.LENGTH_SHORT).show();
             performAuth(view);
         });
-
         return view;
     }
 
@@ -66,7 +67,7 @@ public class SignUpFragment extends Fragment{
         passwordField = view.findViewById(R.id.textPassword);
         rePasswordField = view.findViewById(R.id.textRepassword);
         btnSignUp = view.findViewById(R.id.btnSignUp);
-        googleImg = view.findViewById(R.id.img_registerWithGoogle);
+        addressField = view.findViewById(R.id.text_address);
         progressDialog = new ProgressDialog(view.getContext());
         // firebase objects
         auth = FirebaseAuth.getInstance();
@@ -94,6 +95,7 @@ public class SignUpFragment extends Fragment{
         String password = passwordField.getText().toString();
         String rePassword = rePasswordField.getText().toString();
         String mobile = mobileField.getText().toString();
+        String address = addressField.getText().toString();
 
         boolean isError = false;
 
@@ -116,6 +118,9 @@ public class SignUpFragment extends Fragment{
         if(mobile.isEmpty() || mobile.length()!=11){
             isError=true;
             mobileField.setError("Mobile numbers must be 11 characters in length");
+        }if(address.isEmpty()){
+            isError=true;
+            mobileField.setError("Please enter your address");
         }
         Log.d("login", "120");
         if(!isError){
@@ -132,7 +137,7 @@ public class SignUpFragment extends Fragment{
                     editor.putString("uid", user.getUid());
                     editor.apply();
                     addUserToFirebaseDB(user.getUid(), email, name, mobile);
-
+                    addUserToRoomDatabase(email, name, mobile, address);
                     progressDialog.dismiss();
                     Toast.makeText(view.getContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
                     replaceActivity(view, MainMenuActivity.class);
@@ -150,6 +155,17 @@ public class SignUpFragment extends Fragment{
         userRef.child("name").setValue(name);
         userRef.child("mobile").setValue(mobile);
         userRef.child("email").setValue(email);
+    }
+
+    private void addUserToRoomDatabase(String email, String name, String mobile, String address){
+        UserDatabase db = Room.databaseBuilder(getActivity().getApplicationContext(),
+                UserDatabase.class, "user-database").allowMainThreadQueries().build();
+        User user = new User(name, email, mobile, address);
+        db.userDao().insertAll(user);
+//        List<User> users = db.userDao().getAllUsers();
+//        for (User u:users){
+//            Log.d("dbroom", u.toString());
+//        }
     }
 
 }

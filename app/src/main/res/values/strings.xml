@@ -17,6 +17,7 @@
     <string name="hint_name">Name</string>
     <string name="hint_password">Password</string>
     <string name="hint_repassword">Retype your password</string>
+    <string name="hint_address">Type your address</string>
     <string name="btn_login">Login</string>
     <string name="btn_forgot_password">Forgot password?</string>
     <string name="text_alternative_login">or login with</string>
@@ -70,6 +71,7 @@
     <string name="cart_delivery_subtotal">delivery subtotal:</string>
     <string name="cart_items_subtotal">items subtotal:</string>
     <string name="cart_items_grandtotal">Total:</string>
+    <string name="cart_address">Deliver to:</string>
 
     <!--orders history-->
     <string name="ohistory_title">Orders History</string>

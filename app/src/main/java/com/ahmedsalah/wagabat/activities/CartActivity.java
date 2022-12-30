@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -13,8 +16,11 @@ import android.widget.TextView;
 
 import com.ahmedsalah.wagabat.R;
 import com.ahmedsalah.wagabat.adapters.CartAdapter;
+import com.ahmedsalah.wagabat.db.databases.UserDatabase;
+import com.ahmedsalah.wagabat.db.entities.User;
 import com.ahmedsalah.wagabat.models.CartModel;
 import com.ahmedsalah.wagabat.models.Item;
+import com.ahmedsalah.wagabat.models.OrderModel;
 import com.ahmedsalah.wagabat.utils.OrdersCart;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,15 +31,17 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class CartActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Button cancelBtn, checkoutBtn;
-    TextView itemSubTotalView, deliverySubTotalView, totalView;
+    TextView itemSubTotalView, deliverySubTotalView, totalView, addressTextView;
     LinearLayoutManager layoutManager;
-    DatabaseReference databaseNameRef, dishesDatabaseRef;
+    DatabaseReference databaseNameRef, dishesDatabaseRef, databaseOrderRef;
     List<CartModel> cartItemsList;
     CartAdapter adapter;
+    SharedPreferences prefs;
 
     float dishesSubTotal, deliverySubTotal;
 
@@ -58,7 +66,7 @@ public class CartActivity extends AppCompatActivity {
         itemSubTotalView = findViewById(R.id.txt_items_subtotal);
         deliverySubTotalView = findViewById(R.id.txt_del_subtotal);
         totalView = findViewById(R.id.txt_total);
-
+        addressTextView = findViewById(R.id.cart_address);
         // recycler view
         cartItemsList = new ArrayList<>();
         layoutManager = new LinearLayoutManager(this);
@@ -67,6 +75,11 @@ public class CartActivity extends AppCompatActivity {
         adapter = new CartAdapter(cartItemsList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        // shared pref
+        prefs = getSharedPreferences(getResources().getString(R.string.shared_pref_name),
+                Context.MODE_PRIVATE);
+        //setting data
+        setAddressData();
     }
 
     public void populateCart(){
@@ -145,12 +158,52 @@ public class CartActivity extends AppCompatActivity {
         });
     }
 
+    //@TODO: handle order clicks
     private void handleCheckoutClick(){
+//        cartItemsList
+        String orderId = UUID.randomUUID().toString();
+        String userId = prefs.getString("uid", null);
+        String restId = OrdersCart.getInstance().getCurrentResturantId();
+        // @TODO create an OrderModel object for every order
+        databaseOrderRef = FirebaseDatabase.getInstance()
+                .getReference("orders").child(orderId);
+        databaseOrderRef.child("userID").setValue(userId);
+        databaseOrderRef.child("restID").setValue(restId);
+        databaseOrderRef.child("price").setValue(getTotal());
+        databaseOrderRef.child("status").setValue(OrderModel.Status.WAITING_FOR_APPROVAL.ordinal());
+        databaseOrderRef = databaseOrderRef.child("items");
+        List<Item> items = OrdersCart.getInstance().getOrders();
+        for(Item item:items){
+            databaseOrderRef.child(item.getDishId()).setValue(item.getCount());
+        }
 
     }
 
+    private void setAddressData(){
+        String userId = prefs.getString("uid", null);
+        DatabaseReference emailRef = FirebaseDatabase.getInstance().getReference("users/"+userId+"/email");
+        UserDatabase db = Room.databaseBuilder(getApplicationContext(),
+                UserDatabase.class, "user-database").allowMainThreadQueries().build();
+        emailRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String email = snapshot.getValue(String.class);
+                Log.d("fbdb", email);
+                User user = db.userDao().getUserByEmaiL(email);
+                addressTextView.setText(
+                        getString(R.string.cart_address)+
+                        user.address
+                );
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     private void notifyTotalPriceChanged(){
-        totalView.setText(Float.toString(deliverySubTotal+dishesSubTotal));
+        totalView.setText(Float.toString(getTotal()));
         itemSubTotalView.setText(Float.toString(dishesSubTotal));
     }
 
@@ -158,5 +211,9 @@ public class CartActivity extends AppCompatActivity {
         Intent intent = new Intent(this, activityClass);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
+    }
+
+    private float getTotal(){
+        return deliverySubTotal+dishesSubTotal;
     }
 }

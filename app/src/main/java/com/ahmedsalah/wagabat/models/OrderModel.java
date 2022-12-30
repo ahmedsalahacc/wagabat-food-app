@@ -30,6 +30,54 @@ public class OrderModel {
         this.resturantID = resturantID;
     }
 
+    public void setResturantID(String resturantID) {
+        this.resturantID = resturantID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setItemsList(ArrayList<Item> itemsList) {
+        this.itemsList = itemsList;
+    }
+
+    public void setDatetime(LocalDateTime datetime) {
+        this.datetime = datetime;
+    }
+
+    public String getResturantID() {
+        return resturantID;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public ArrayList<Item> getItemsList() {
+        return itemsList;
+    }
+
+    public LocalDateTime getDatetime() {
+        return datetime;
+    }
+
     public static String getStringForStatus(OrderModel.Status status){
         switch(status){
             case WAITING_FOR_APPROVAL:

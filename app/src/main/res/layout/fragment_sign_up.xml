@@ -119,9 +119,24 @@
                     android:background="@drawable/rounded_field"
                     android:textColorHint="@color/dark"
                     android:minHeight="48dp" />
+                <EditText
+                    android:id="@+id/text_address"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/hint_address"
+                    android:layout_gravity="center_horizontal"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5dp"
+                    android:background="@drawable/rounded_field"
+                    android:textColorHint="@color/dark"
+                    android:minHeight="48dp" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
                     android:paddingTop="20dp"
                     >
 
@@ -138,30 +153,30 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.07" />
 
-                    <TextView
-                        android:id="@+id/alternativeMethods"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/text_alternative_register"
-                        android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/btnSignUp"
-                        app:layout_constraintHorizontal_bias="0.545"
-                        app:layout_constraintStart_toStartOf="@+id/btnSignUp"
-                        app:layout_constraintTop_toBottomOf="@+id/btnSignUp"
-                        app:layout_constraintVertical_bias="0.32" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/alternativeMethods"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/text_alternative_register"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="@+id/btnSignUp"-->
+<!--                        app:layout_constraintHorizontal_bias="0.545"-->
+<!--                        app:layout_constraintStart_toStartOf="@+id/btnSignUp"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/btnSignUp"-->
+<!--                        app:layout_constraintVertical_bias="0.32" />-->
 
-                    <ImageView
-                        android:id="@+id/img_registerWithGoogle"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/google"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/alternativeMethods"
-                        app:layout_constraintVertical_bias="0.42" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/img_registerWithGoogle"-->
+<!--                        android:layout_width="48dp"-->
+<!--                        android:layout_height="48dp"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        android:src="@drawable/google"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="@id/alternativeMethods"-->
+<!--                        app:layout_constraintVertical_bias="0.42" />-->
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
