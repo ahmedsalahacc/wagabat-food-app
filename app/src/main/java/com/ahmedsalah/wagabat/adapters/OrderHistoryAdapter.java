@@ -12,6 +12,8 @@ import com.ahmedsalah.wagabat.models.OrderHistoryItem;
 import com.ahmedsalah.wagabat.R;
 import com.ahmedsalah.wagabat.models.OrderModel;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder> {
@@ -33,7 +35,13 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
         public void setData(String orderId, String dateTime, OrderModel.Status orderStatus){
             orderIDView.setText("Order: "+orderId.substring(0,10));
-            orderDateView.setText(dateTime);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                LocalDateTime ldt = LocalDateTime.
+                        parse(dateTime.replace('T',' ').substring(0,19), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                String newString = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(ldt); // 9:00
+                orderDateView.setText(newString);
+            }
+
             orderStatusView.setText(OrderModel.getStringForStatus(orderStatus));
         }
     }

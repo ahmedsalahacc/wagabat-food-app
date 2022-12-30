@@ -73,7 +73,7 @@ public class OrderHistory extends AppCompatActivity {
                             Log.d("ohdbg","eachid:"+orderID);
                             OrderHistoryItem orderHistoryItem = new OrderHistoryItem(
                                     orderID,
-                                    "DATE TIME",
+                                    result.get("datetime").toString(),
                                     result.get("address").toString(),
                                     OrderModel.mapNumberToStatusEnum(
                                             Integer.parseInt(result.get("status").toString())

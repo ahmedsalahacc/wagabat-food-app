@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -156,37 +157,76 @@ public class CartActivity extends AppCompatActivity {
         });
 
         checkoutBtn.setOnClickListener(v->{
-            handleCheckoutClick();
+            try {
+                handleCheckoutClick();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
     //@TODO: handle order clicks
-    private void handleCheckoutClick(){
+    private void handleCheckoutClick() throws Exception {
         if(OrdersCart.getInstance().getOrders().size()<1){
             Toast.makeText(this, "No Items in the Cart to checkout", Toast.LENGTH_SHORT).show();
             return;
         }
-        String orderId = UUID.randomUUID().toString();
         String userId = prefs.getString("uid", null);
         String restId = OrdersCart.getInstance().getCurrentResturantId();
+        OrderModel orderObject = new OrderModel(
+                restId, userId
+        );
+        orderObject.setItemsList(OrdersCart.getInstance().getOrders());
+        orderObject.confirm();
+
+        // check if order is noon or afternoon delivery
+        boolean isNoon=true; // noon
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime noonTime = LocalDateTime.of(now.getYear(), now.getMonth(),
+                    now.getDayOfMonth(), 10, 0);
+            LocalDateTime startTime = LocalDateTime.of(now.getYear(), now.getMonth(),
+                    now.getDayOfMonth(), 8, 0);
+            LocalDateTime afternoonTime = LocalDateTime.of(now.getYear(), now.getMonth(),
+                    now.getDayOfMonth(), 13, 0);
+
+            if(orderObject.getDatetime().isAfter(startTime)) {
+                if (orderObject.getDatetime().isBefore(noonTime)) {
+                    isNoon = true;
+                    Log.d("dtime", "noon");
+                } else if (orderObject.getDatetime().isBefore(afternoonTime)) {
+                    isNoon = false;
+                    Log.d("dtime", "afternoon");
+
+                }
+            }else{
+                Toast.makeText(this, "Cannot order after 1PM", Toast.LENGTH_SHORT).show();
+                Log.d("dtime", "can't");
+                return;
+            }
+        }
+
         // @TODO create an OrderModel object for every order
         databaseOrderRef = FirebaseDatabase.getInstance()
-                .getReference("orders").child(orderId);
-        databaseOrderRef.child("userID").setValue(userId);
-        databaseOrderRef.child("restID").setValue(restId);
+                .getReference("orders").child(orderObject.getId());
+        databaseOrderRef.child("userID").setValue(orderObject.getUserID());
+        databaseOrderRef.child("restID").setValue(orderObject.getResturantID());
         databaseOrderRef.child("price").setValue(getTotal());
-        databaseOrderRef.child("status").setValue(OrderModel.Status.WAITING_FOR_APPROVAL.ordinal());
+        databaseOrderRef.child("status").setValue(orderObject.getStatus().ordinal());
         databaseOrderRef.child("address").setValue(userAddress);
+        databaseOrderRef.child("datetime").setValue(orderObject.getDatetime().toString());
+        databaseOrderRef.child("isnoon").setValue(Boolean.toString(isNoon));
         databaseOrderRef = databaseOrderRef.child("items");
-        List<Item> items = OrdersCart.getInstance().getOrders();
-        for(Item item:items){
+        for(Item item:orderObject.getItemsList()){
             databaseOrderRef.child(item.getDishId()).setValue(item.getCount());
         }
         // add orderid to resturantdatabase
-        databaseRestaurantRef.child("orders").child(orderId).setValue(orderId);
+        databaseRestaurantRef.child("orders").child(orderObject.getId())
+                .setValue(orderObject.getId());
         // add orderid to userdatabase
         databaseUserRef = FirebaseDatabase.getInstance().getReference("users/"+userId+"/orders");
-        databaseUserRef.child(orderId).setValue(orderId);
+        databaseUserRef.child(orderObject.getId())
+                .setValue(orderObject.getId());
         // reset cart and navigate to orderhistory page
         OrdersCart.getInstance().reset();
         replaceActivity(MainMenuActivity.class);
