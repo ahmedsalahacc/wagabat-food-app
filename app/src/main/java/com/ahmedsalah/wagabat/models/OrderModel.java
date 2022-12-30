@@ -91,6 +91,18 @@ public class OrderModel {
         }
     }
 
+    public static Status mapNumberToStatusEnum(int num){
+        switch (num){
+            case 1:
+                return Status.WAITING_FOR_APPROVAL;
+            case 2:
+                return Status.PREPARING;
+            case 3:
+                return Status.DELIVERED;
+            default:
+                return Status.CREATED;
+        }
+    }
     public void changeStatus(Status status){
         this.status = status;
     }

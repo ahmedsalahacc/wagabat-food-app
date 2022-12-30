@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmedsalah.wagabat.R;
 import com.ahmedsalah.wagabat.adapters.CartAdapter;
@@ -38,10 +39,11 @@ public class CartActivity extends AppCompatActivity {
     Button cancelBtn, checkoutBtn;
     TextView itemSubTotalView, deliverySubTotalView, totalView, addressTextView;
     LinearLayoutManager layoutManager;
-    DatabaseReference databaseNameRef, dishesDatabaseRef, databaseOrderRef;
+    DatabaseReference databaseRestaurantRef, dishesDatabaseRef, databaseOrderRef, databaseUserRef;
     List<CartModel> cartItemsList;
     CartAdapter adapter;
     SharedPreferences prefs;
+    String userAddress;
 
     float dishesSubTotal, deliverySubTotal;
 
@@ -88,12 +90,12 @@ public class CartActivity extends AppCompatActivity {
         if (restId==null){
             return;
         }
-        databaseNameRef =
+        databaseRestaurantRef =
                 FirebaseDatabase.getInstance().
                 getReference("resturants/"+restId);
 
         // get restaurant info
-        databaseNameRef.addValueEventListener(new ValueEventListener() {
+        databaseRestaurantRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cartItemsList.clear();
@@ -160,7 +162,10 @@ public class CartActivity extends AppCompatActivity {
 
     //@TODO: handle order clicks
     private void handleCheckoutClick(){
-//        cartItemsList
+        if(OrdersCart.getInstance().getOrders().size()<1){
+            Toast.makeText(this, "No Items in the Cart to checkout", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String orderId = UUID.randomUUID().toString();
         String userId = prefs.getString("uid", null);
         String restId = OrdersCart.getInstance().getCurrentResturantId();
@@ -171,12 +176,20 @@ public class CartActivity extends AppCompatActivity {
         databaseOrderRef.child("restID").setValue(restId);
         databaseOrderRef.child("price").setValue(getTotal());
         databaseOrderRef.child("status").setValue(OrderModel.Status.WAITING_FOR_APPROVAL.ordinal());
+        databaseOrderRef.child("address").setValue(userAddress);
         databaseOrderRef = databaseOrderRef.child("items");
         List<Item> items = OrdersCart.getInstance().getOrders();
         for(Item item:items){
             databaseOrderRef.child(item.getDishId()).setValue(item.getCount());
         }
-
+        // add orderid to resturantdatabase
+        databaseRestaurantRef.child("orders").child(orderId).setValue(orderId);
+        // add orderid to userdatabase
+        databaseUserRef = FirebaseDatabase.getInstance().getReference("users/"+userId+"/orders");
+        databaseUserRef.child(orderId).setValue(orderId);
+        // reset cart and navigate to orderhistory page
+        OrdersCart.getInstance().reset();
+        replaceActivity(MainMenuActivity.class);
     }
 
     private void setAddressData(){
@@ -190,6 +203,7 @@ public class CartActivity extends AppCompatActivity {
                 String email = snapshot.getValue(String.class);
                 Log.d("fbdb", email);
                 User user = db.userDao().getUserByEmaiL(email);
+                userAddress = user.address;
                 addressTextView.setText(
                         getString(R.string.cart_address)+
                         user.address

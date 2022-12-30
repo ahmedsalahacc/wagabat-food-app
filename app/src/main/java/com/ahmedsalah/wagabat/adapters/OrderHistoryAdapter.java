@@ -32,7 +32,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         }
 
         public void setData(String orderId, String dateTime, OrderModel.Status orderStatus){
-            orderIDView.setText(orderId);
+            orderIDView.setText("Order: "+orderId.substring(0,10));
             orderDateView.setText(dateTime);
             orderStatusView.setText(OrderModel.getStringForStatus(orderStatus));
         }
@@ -56,6 +56,10 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
     @Override
     public int getItemCount() {
-        return 0;
+        return orderHistoryItemsList.size();
+    }
+
+    public List<OrderHistoryItem> getOrderHistoryItemList(){
+        return this.orderHistoryItemsList;
     }
 }
