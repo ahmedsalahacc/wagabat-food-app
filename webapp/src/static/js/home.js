@@ -261,10 +261,24 @@ function updateAllOrdersState() {
         <div><strong>Price:</strong> ${each["data"]["price"]}</div>
         <div><strong>Datetime:</strong> ${each["data"]["datetime"]}</div>
         <div><strong>Address:</strong> ${each["data"]["address"]}</div>
+        `;
+
+    if (Number.parseInt(each["data"]["status"]) < 3)
+      innerHTMLContainer += `
+          <div><button class="btn btn-success btn-order-deliver" id="${each["id"]}"> Deliver</button></div>
+          `;
+    innerHTMLContainer += `
     </div>
     `;
   }
   ordersHistoryHTMLContainerNode.innerHTML = innerHTMLContainer;
+  // configure deliver buttons
+  const btns = document.getElementsByClassName("btn-order-deliver");
+  for (let each of btns) {
+    each.addEventListener("click", () => {
+      changeOrderStatusToDelivered(each.id);
+    });
+  }
 }
 
 async function changeOrderStatusToAccepted(id) {
@@ -278,6 +292,30 @@ async function changeOrderStatusToAccepted(id) {
         await set(ref(database, orderPath), {
           ...order,
           status: 2,
+        }).catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log("error:" + errorMessage + ":" + errorCode);
+        });
+      }
+    })
+    .then(() => notifyChanged())
+    .catch((error) => {
+      console.log(orderPath, "is not available");
+      console.log("ERR:" + error);
+    });
+}
+async function changeOrderStatusToDelivered(id) {
+  const orderPath = "orders/" + id;
+
+  get(child(ref(database), orderPath))
+    .then(async (snapshot) => {
+      // do
+      if (snapshot.exists()) {
+        let order = snapshot.val();
+        await set(ref(database, orderPath), {
+          ...order,
+          status: 3,
         }).catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;

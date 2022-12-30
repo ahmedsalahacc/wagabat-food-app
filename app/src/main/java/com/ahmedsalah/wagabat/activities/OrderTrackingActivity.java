@@ -118,6 +118,7 @@ public class OrderTrackingActivity extends AppCompatActivity {
 
                 // get dish items data
                 DatabaseReference dishesDatabaseRef;
+                orderDishItemsDetails = "";
                 for(String each:dishItems.keySet()){
                     dishesDatabaseRef = FirebaseDatabase
                             .getInstance()
