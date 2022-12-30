@@ -215,7 +215,7 @@ public class CartActivity extends AppCompatActivity {
         databaseOrderRef.child("status").setValue(orderObject.getStatus().ordinal());
         databaseOrderRef.child("address").setValue(userAddress);
         databaseOrderRef.child("datetime").setValue(orderObject.getDatetime().toString());
-        databaseOrderRef.child("isnoon").setValue(Boolean.toString(isNoon));
+        databaseOrderRef.child("delivery-period").setValue(Boolean.toString(isNoon));
         databaseOrderRef = databaseOrderRef.child("items");
         for(Item item:orderObject.getItemsList()){
             databaseOrderRef.child(item.getDishId()).setValue(item.getCount());

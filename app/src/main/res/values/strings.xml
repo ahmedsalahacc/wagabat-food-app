@@ -75,4 +75,16 @@
 
     <!--orders history-->
     <string name="ohistory_title">Orders History</string>
+
+<!--    Order tracking-->
+    <string name="order_tracking_title">Order Tracking</string>
+    <string name="orderId_hint">OrderID:</string>
+    <string name="orderDate_hint">Order Date Time:</string>
+    <string name="orderRestaurant_hint">Restaurant:</string>
+    <string name="orderPeriod_hint">Period:</string>
+<!--    Order Status Hints-->
+    <string name="order_waiting">Waiting to be approved</string>
+    <string name="order_preparing">Preparing</string>
+    <string name="order_delivered">Delivered</string>
+    <string name="order_price">Price:</string>
 </resources>

@@ -79,6 +79,12 @@ public class OrderHistory extends AppCompatActivity {
                                             Integer.parseInt(result.get("status").toString())
                                     )
                             );
+                            // check if order item already exists in the db
+                            for(int i=0;i<orderHistoryItemsList.size();i++){
+                                if(orderHistoryItemsList.get(i).getOrderID().equalsIgnoreCase(orderID)){
+                                    orderHistoryItemsList.remove(i);
+                                }
+                            }
                             orderHistoryItemsList.add(orderHistoryItem);
                             Log.d("ohdbg","eachid:"+orderHistoryItemsList.toString());
                             adapter.notifyDataSetChanged();

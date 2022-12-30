@@ -1,5 +1,6 @@
 package com.ahmedsalah.wagabat.adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ahmedsalah.wagabat.activities.OrderTrackingActivity;
 import com.ahmedsalah.wagabat.models.OrderHistoryItem;
 import com.ahmedsalah.wagabat.R;
 import com.ahmedsalah.wagabat.models.OrderModel;
@@ -60,6 +62,14 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         String orderDateTime = item.getOrderDateTime();
         OrderModel.Status orderStatus = item.getOrderStatus();
         holder.setData(orderID, orderDateTime, orderStatus);
+
+        holder.view.setOnClickListener(v->{
+            Intent intent = new Intent(v.getContext(), OrderTrackingActivity.class);
+            intent.putExtra("ostatus", orderStatus.ordinal());
+            intent.putExtra("oid", orderID);
+            intent.putExtra("orderDatetime", orderDateTime);
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override

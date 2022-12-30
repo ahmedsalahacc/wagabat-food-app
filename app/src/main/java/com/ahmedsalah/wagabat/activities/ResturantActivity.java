@@ -87,7 +87,7 @@ public class ResturantActivity extends AppCompatActivity {
                 DatabaseReference dishesDatabase;
 
                 for (DataSnapshot each : snapshot.getChildren()) {
-                    Map<String, Object> jsonObj = (Map<String, Object>) each.getValue();
+//                    Map<String, Object> jsonObj = (Map<String, Object>) each.getValue();
                      dishesDatabase = FirebaseDatabase.getInstance().getReference("dishes/"+each.getKey());
                      dishesDatabase.addValueEventListener(new ValueEventListener() {
                          @Override

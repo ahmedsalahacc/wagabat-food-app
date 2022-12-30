@@ -20,21 +20,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".OrderHistoryActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".OrdersHistoryActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".OrderTrackingActivity"
+            android:name=".activities.OrderTrackingActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
