@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,6 +18,7 @@ import com.ahmedsalah.wagabat.R;
 import com.ahmedsalah.wagabat.models.Item;
 import com.ahmedsalah.wagabat.utils.OrdersCart;
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DishItemActivity extends AppCompatActivity {
 
@@ -25,6 +26,7 @@ public class DishItemActivity extends AppCompatActivity {
     String dishId, resturantId;
     TextView dishNameView, descriptionView, priceView, qtyTextView;
     Button qtyDecrementBtn, qtyIncrementBtn, addToCartBtn;
+    FloatingActionButton cartBtn;
     EditText specialRequestEdit;
     ImageView imgView;
     SharedPreferences sharedPref;
@@ -37,6 +39,7 @@ public class DishItemActivity extends AppCompatActivity {
         manageQtyManipulation(qtyIncrementBtn, qtyDecrementBtn, qtyTextView);
         initializeComponentsDataFromIntent();
         manageAddToCartButton();
+        cartFloatingBtnClickListener();
     }
 
     public void init(){
@@ -44,6 +47,7 @@ public class DishItemActivity extends AppCompatActivity {
         // text views
         dishNameView = findViewById(R.id.title);
         descriptionView = findViewById(R.id.description);
+        descriptionView.setMovementMethod(new ScrollingMovementMethod());
         priceView = findViewById(R.id.price);
         qtyTextView = findViewById(R.id.qty_textView);
         qtyTextView.setText(Integer.toString(quantity));
@@ -51,6 +55,7 @@ public class DishItemActivity extends AppCompatActivity {
         qtyIncrementBtn = findViewById(R.id.qty_increment);
         qtyDecrementBtn = findViewById(R.id.qty_decrement);
         addToCartBtn = findViewById(R.id.addToCartBtn);
+        cartBtn = findViewById(R.id.cartBtn);
         // edit text
         specialRequestEdit = findViewById(R.id.special_requests);
         // Image view
@@ -121,9 +126,15 @@ public class DishItemActivity extends AppCompatActivity {
 
     private void replaceActivity(Class activityClass){
         Intent intent = new Intent(this, activityClass);
-//        intent.putExtra("id", resturantId);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("id", resturantId);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
+    }
+
+    public void cartFloatingBtnClickListener(){
+        cartBtn.setOnClickListener(v->{
+            replaceActivity(CartActivity.class);
+        });
     }
 
 }

@@ -102,27 +102,28 @@
                 android:text="@string/account_cart"
                 android:textColor="@color/black" />
 
-            <Button
-                android:id="@+id/account_vouchers"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginVertical="2dp"
-                android:drawableLeft="@drawable/ic_baseline_vouchers"
-                android:gravity="center_vertical"
-                android:text="@string/account_vouchers"
-                android:textColor="@color/black" />
+<!--            <Button-->
+<!--                android:id="@+id/account_vouchers"-->
+<!--                style="@style/Widget.MaterialComponents.Button.TextButton"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:layout_marginVertical="2dp"-->
+<!--                android:drawableLeft="@drawable/ic_baseline_vouchers"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:text="@string/account_vouchers"-->
+<!--                android:textColor="@color/black" />-->
 
-            <Button
-                android:id="@+id/account_payment"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginVertical="5dp"
-                android:drawableLeft="@drawable/ic_baseline_attach_money_24"
-                android:gravity="center_vertical"
-                android:text="@string/account_pay"
-                android:textColor="@color/black" />
+<!--            <Button-->
+<!--                android:id="@+id/account_payment"-->
+<!--                style="@style/Widget.MaterialComponents.Button.TextButton"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:layout_marginVertical="5dp"-->
+<!--                android:drawableLeft="@drawable/ic_baseline_attach_money_24"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:text="@string/account_pay"-->
+<!--                android:textColor="@color/black" />-->
+<!--            -->
 
             <Button
                 android:id="@+id/account_help"

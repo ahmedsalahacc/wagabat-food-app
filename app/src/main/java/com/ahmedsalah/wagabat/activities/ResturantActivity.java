@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,6 +39,7 @@ public class ResturantActivity extends AppCompatActivity {
     ImageView imgView;
     TextView restName, category, rating,
             deliveryTime, deliveryCost;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,8 @@ public class ResturantActivity extends AppCompatActivity {
         deliveryTime = findViewById(R.id.rest_delivery_time);
         deliveryCost = findViewById(R.id.rest_delivery_price);
         imgView = findViewById(R.id.res_img);
-
+        progressDialog = new ProgressDialog(this);
+        progressDialogueSetter();
         // recycler view
         dishesList = new ArrayList<>();
         recyclerView = findViewById(R.id.dishes_recycler_view);
@@ -113,6 +116,7 @@ public class ResturantActivity extends AppCompatActivity {
                      });
 //
                 }
+                progressDialog.dismiss();
             }
 
             @Override
@@ -134,6 +138,13 @@ public class ResturantActivity extends AppCompatActivity {
         deliveryCost.setText("EGP "+bundle.getString("deliveryPrice"));
         deliveryTime.setText(bundle.getString("deliveryTime")+" mins");
         rating.setText(bundle.getString("rating"));
+    }
+
+    private void progressDialogueSetter(){
+        progressDialog.setMessage("Loading...");
+        progressDialog.setTitle("Loading Content");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
     }
 
 }

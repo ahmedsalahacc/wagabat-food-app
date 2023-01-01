@@ -67,7 +67,6 @@ public class SignUpFragment extends Fragment{
         passwordField = view.findViewById(R.id.textPassword);
         rePasswordField = view.findViewById(R.id.textRepassword);
         btnSignUp = view.findViewById(R.id.btnSignUp);
-        addressField = view.findViewById(R.id.text_address);
         progressDialog = new ProgressDialog(view.getContext());
         // firebase objects
         auth = FirebaseAuth.getInstance();
@@ -95,7 +94,6 @@ public class SignUpFragment extends Fragment{
         String password = passwordField.getText().toString();
         String rePassword = rePasswordField.getText().toString();
         String mobile = mobileField.getText().toString();
-        String address = addressField.getText().toString();
 
         boolean isError = false;
 
@@ -118,9 +116,6 @@ public class SignUpFragment extends Fragment{
         if(mobile.isEmpty() || mobile.length()!=11){
             isError=true;
             mobileField.setError("Mobile numbers must be 11 characters in length");
-        }if(address.isEmpty()){
-            isError=true;
-            mobileField.setError("Please enter your address");
         }
         Log.d("login", "120");
         if(!isError){
@@ -137,7 +132,7 @@ public class SignUpFragment extends Fragment{
                     editor.putString("uid", user.getUid());
                     editor.apply();
                     addUserToFirebaseDB(user.getUid(), email, name, mobile);
-                    addUserToRoomDatabase(email, name, mobile, address);
+                    addUserToRoomDatabase(user.getUid(), email, name, mobile);
                     progressDialog.dismiss();
                     Toast.makeText(view.getContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
                     replaceActivity(view, MainMenuActivity.class);
@@ -157,15 +152,11 @@ public class SignUpFragment extends Fragment{
         userRef.child("email").setValue(email);
     }
 
-    private void addUserToRoomDatabase(String email, String name, String mobile, String address){
+    private void addUserToRoomDatabase(String authID, String email, String name, String mobile){
         UserDatabase db = Room.databaseBuilder(getActivity().getApplicationContext(),
                 UserDatabase.class, "user-database").allowMainThreadQueries().build();
-        User user = new User(name, email, mobile, address);
+        User user = new User(authID, name, email, mobile);
         db.userDao().insertAll(user);
-//        List<User> users = db.userDao().getAllUsers();
-//        for (User u:users){
-//            Log.d("dbroom", u.toString());
-//        }
     }
 
 }

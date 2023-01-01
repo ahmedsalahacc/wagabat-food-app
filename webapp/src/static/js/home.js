@@ -47,6 +47,18 @@ const convertStatusToString = (status) => {
   }
 };
 
+const convertPeriodToString = (p) => {
+  p = Number.parseInt(p);
+  if (p === 0) return "Noon (12 PM)";
+  return "Afternoon (3 PM)";
+};
+
+const convertLocationToString = (p) => {
+  p = Number.parseInt(p);
+  if (p === 0) return "Gate 3";
+  return "Gate 4";
+};
+
 onAuthStateChanged(auth, async (user) => {
   if (user != null) {
     console.log("user", user);
@@ -213,7 +225,14 @@ function updateActiveOrdersState() {
             data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <p>
-                  <strong>Address:</strong> ${each["data"]["address"]}
+                  <strong>Address:</strong> ${convertLocationToString(
+                    each["data"]["location"]
+                  )}
+                </p>
+                <p>
+                  <strong>Address:</strong> ${convertPeriodToString(
+                    each["data"]["period"]
+                  )}
                 </p>
                 <p>
                   <strong>Datetime:</strong> ${each["data"]["datetime"]}
@@ -260,7 +279,12 @@ function updateAllOrdersState() {
         )}</div>
         <div><strong>Price:</strong> ${each["data"]["price"]}</div>
         <div><strong>Datetime:</strong> ${each["data"]["datetime"]}</div>
-        <div><strong>Address:</strong> ${each["data"]["address"]}</div>
+        <div><strong>Delivery Period:</strong> ${convertPeriodToString(
+          each["data"]["period"]
+        )}</div>
+        <div><strong>Location:</strong> ${convertLocationToString(
+          each["data"]["location"]
+        )}</div>
         `;
 
     if (Number.parseInt(each["data"]["status"]) < 3)
@@ -268,6 +292,7 @@ function updateAllOrdersState() {
           <div><button class="btn btn-success btn-order-deliver" id="${each["id"]}"> Deliver</button></div>
           `;
     innerHTMLContainer += `
+        <hr/>
     </div>
     `;
   }

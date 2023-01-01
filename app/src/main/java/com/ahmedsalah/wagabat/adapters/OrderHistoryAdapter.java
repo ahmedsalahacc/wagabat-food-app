@@ -1,5 +1,6 @@
 package com.ahmedsalah.wagabat.adapters;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ahmedsalah.wagabat.activities.CartActivity;
 import com.ahmedsalah.wagabat.activities.OrderTrackingActivity;
 import com.ahmedsalah.wagabat.models.OrderHistoryItem;
 import com.ahmedsalah.wagabat.R;
@@ -35,15 +37,10 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             orderStatusView = view.findViewById(R.id.order_status);
         }
 
-        public void setData(String orderId, String dateTime, OrderModel.Status orderStatus){
+        public void setData(String orderId, CartActivity.DeliveryTime deliveryTime,
+                            CartActivity.DeliveryGate deliveryGate, OrderModel.Status orderStatus){
             orderIDView.setText("Order: "+orderId.substring(0,10));
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                LocalDateTime ldt = LocalDateTime.
-                        parse(dateTime.replace('T',' ').substring(0,19), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                String newString = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(ldt); // 9:00
-                orderDateView.setText(newString);
-            }
-
+            orderDateView.setText(deliveryTime.toString());
             orderStatusView.setText(OrderModel.getStringForStatus(orderStatus));
         }
     }
@@ -59,15 +56,18 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         OrderHistoryItem item = this.orderHistoryItemsList.get(position);
         String orderID = item.getOrderID();
-        String orderDateTime = item.getOrderDateTime();
+        CartActivity.DeliveryTime deliveryPeriod = item.getDeliveryTime();
+        CartActivity.DeliveryGate deliveryLocation = item.getDeliveryLocation();
+        String datetime = item.getDatetime();
         OrderModel.Status orderStatus = item.getOrderStatus();
-        holder.setData(orderID, orderDateTime, orderStatus);
+        holder.setData(orderID, deliveryPeriod, deliveryLocation, orderStatus);
 
         holder.view.setOnClickListener(v->{
             Intent intent = new Intent(v.getContext(), OrderTrackingActivity.class);
             intent.putExtra("ostatus", orderStatus.ordinal());
             intent.putExtra("oid", orderID);
-            intent.putExtra("orderDatetime", orderDateTime);
+            intent.putExtra("delivery_period", deliveryPeriod.toString());
+            intent.putExtra("datetime", datetime);
             v.getContext().startActivity(intent);
         });
     }

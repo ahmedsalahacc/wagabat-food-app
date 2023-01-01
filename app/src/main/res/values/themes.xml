@@ -21,5 +21,8 @@
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="CustomRadioButtonStyle">
+        <item name="colorControlActivated">@color/wagba_orange</item>
+    </style>
 
 </resources>

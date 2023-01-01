@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -31,6 +32,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
         android:text="@string/sandwitch_name"
         android:textColor="@color/black"
         android:textSize="24sp"
@@ -42,22 +44,22 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView2"
         app:layout_constraintVertical_bias="0.028" />
 
+
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="92dp"
         android:gravity="left"
+        android:maxHeight="150dp"
         android:padding="10dp"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"
         android:text="@string/dish_description"
         android:textColor="@color/dark_gray"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/title"
-        app:layout_constraintHorizontal_bias="0.052"
-        app:layout_constraintStart_toStartOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.129" />
+        tools:layout_editor_absoluteX="-26dp" />
 
     <TextView
         android:id="@+id/priceCurrency"
@@ -78,6 +80,7 @@
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxHeight="100dp"
         android:text="@string/dish_price"
         android:textColor="@color/dark"
         android:textSize="16sp"
@@ -94,6 +97,7 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxHeight="50dp"
         android:layout_marginHorizontal="10dp"
         android:background="@drawable/borders"
         android:ems="10"
@@ -118,10 +122,10 @@
         android:text="@string/place_order"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.919" />
+        app:layout_constraintTop_toBottomOf="@+id/special_requests"
+        app:layout_constraintVertical_bias="0.626" />
 
     <Button
         android:id="@+id/qty_increment"
@@ -186,7 +190,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="254dp" />
+        app:layout_constraintGuide_percent="0.1936508" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
@@ -200,6 +204,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_end="295dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cartBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/wagba_orange"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/addToCartBtn"
+        app:layout_constraintEnd_toEndOf="@+id/addToCartBtn"
+        app:layout_constraintHorizontal_bias="0.94"
+        app:layout_constraintStart_toStartOf="@+id/addToCartBtn"
+        app:layout_constraintTop_toBottomOf="@+id/special_requests"
+        app:layout_constraintVertical_bias="0.466"
+        app:srcCompat="@drawable/ic_baseline_shopping_cart_24"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

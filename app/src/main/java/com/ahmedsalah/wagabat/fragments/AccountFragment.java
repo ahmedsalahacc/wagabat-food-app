@@ -31,7 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.List;
+import java.util.Map;
 
 
 public class AccountFragment extends Fragment {
@@ -70,9 +70,9 @@ public class AccountFragment extends Fragment {
     private void initComponents(){
         ordersHistoryBtn = view.findViewById(R.id.account_orders);
         cartBtn = view.findViewById(R.id.btn_cart);
-        vouchersBtn = view.findViewById(R.id.account_vouchers);
-        paymentsBtn = view.findViewById(R.id.account_payment);
-        helpBtn = view.findViewById(R.id.account_help);
+//        vouchersBtn = view.findViewById(R.id.account_vouchers);
+//        paymentsBtn = view.findViewById(R.id.account_payment);
+//        helpBtn = view.findViewById(R.id.account_help);
         aboutBtn = view.findViewById(R.id.account_about);
         signoutBtn = view.findViewById(R.id.btn_signout);
         profileNameView = view.findViewById(R.id.profile_name);
@@ -84,7 +84,7 @@ public class AccountFragment extends Fragment {
         sharedPref = context.getSharedPreferences(context.getResources().getString(R.string.shared_pref_name),
                 getContext().MODE_PRIVATE);
         editor = sharedPref.edit();
-        usersRef = FirebaseDatabase.getInstance().getReference("users/"+sharedPref.getString("uid", null)+"/email");
+        usersRef = FirebaseDatabase.getInstance().getReference("users/"+sharedPref.getString("uid", null));
         // setting data
         setInfo();
     }
@@ -110,23 +110,42 @@ public class AccountFragment extends Fragment {
 
     private void setInfo(){
         UserDatabase db = Room.databaseBuilder(getActivity().getApplicationContext(),
-                UserDatabase.class, "user-database").allowMainThreadQueries().build();
-        usersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String email = snapshot.getValue(String.class);
-                Log.d("fbdb", email);
+            UserDatabase.class, "user-database").allowMainThreadQueries().build();
+        final User[] user = {db.userDao().getUserByAuthID(sharedPref.getString("uid", null))};
 
-                User user = db.userDao().getUserByEmaiL(email);
-                Log.d("fbdb", user.name+"|name");
-                profileNameView.setText(user.name);
-                profileNumberView.setText(user.mobile);
-            }
+        // user not found -> install data from firebase database
+        if (user[0] ==null){
+            usersRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        Map<String, Object> data = (Map<String, Object>) snapshot.getValue();
+                        user[0] = new User(
+                                sharedPref.getString("uid", null),
+                                data.get("name").toString(),
+                                data.get("email").toString(),
+                                data.get("mobile").toString()
+                        );
+                        db.userDao().insertAll(user);
+                        profileNameView.setText(user[0].name);
+                        profileNumberView.setText(user[0].mobile);
+                    } else{
+                        Toast.makeText(view.getContext(),
+                                "Can't retrieve data [fatal error -> restart the app]", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        } else{
+            //user found -> directly upload the user data from the database
+            Log.d("fbdb", user[0].name+"|name");
+            profileNameView.setText(user[0].name);
+            profileNumberView.setText(user[0].mobile);
+        }
+
     }
 }

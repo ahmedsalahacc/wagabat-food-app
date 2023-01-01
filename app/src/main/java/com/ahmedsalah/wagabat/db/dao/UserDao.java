@@ -15,5 +15,7 @@ public interface UserDao {
     @Query("SELECT * FROM user")
     List<User> getAllUsers();
     @Query("SELECT * FROM user WHERE email IN(:userEmail)")
-    User getUserByEmaiL(String userEmail);
+    User getUserByEmail(String userEmail);
+    @Query("SELECT * FROM user WHERE authid IN(:authid)")
+    User getUserByAuthID(String authid);
 }

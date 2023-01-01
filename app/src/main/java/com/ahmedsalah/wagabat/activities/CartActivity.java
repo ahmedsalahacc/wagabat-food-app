@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,20 +34,28 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class CartActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Button cancelBtn, checkoutBtn;
-    TextView itemSubTotalView, deliverySubTotalView, totalView, addressTextView;
+    TextView itemSubTotalView, deliverySubTotalView, totalView;
     LinearLayoutManager layoutManager;
     DatabaseReference databaseRestaurantRef, dishesDatabaseRef, databaseOrderRef, databaseUserRef;
     List<CartModel> cartItemsList;
     CartAdapter adapter;
     SharedPreferences prefs;
-    String userAddress;
+    RadioGroup radioGroupDeliveryTime, radioGroupDeliveryLocation;
 
     float dishesSubTotal, deliverySubTotal;
+
+    public static enum DeliveryTime{
+        NOON,
+        AFTERNOON
+    };
+    public static enum DeliveryGate{
+        GATE3,
+        GATE4
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +78,8 @@ public class CartActivity extends AppCompatActivity {
         itemSubTotalView = findViewById(R.id.txt_items_subtotal);
         deliverySubTotalView = findViewById(R.id.txt_del_subtotal);
         totalView = findViewById(R.id.txt_total);
-        addressTextView = findViewById(R.id.cart_address);
+        radioGroupDeliveryTime = findViewById(R.id.group_delivery_time);
+        radioGroupDeliveryLocation = findViewById(R.id.group_delivery_place);
         // recycler view
         cartItemsList = new ArrayList<>();
         layoutManager = new LinearLayoutManager(this);
@@ -171,13 +181,37 @@ public class CartActivity extends AppCompatActivity {
             Toast.makeText(this, "No Items in the Cart to checkout", Toast.LENGTH_SHORT).show();
             return;
         }
+        // get checked radio buttons
+        DeliveryTime deliveryTimeEnum;
+        DeliveryGate deliveryGateEnum;
+        if (radioGroupDeliveryTime.getCheckedRadioButtonId() == R.id.radio_noon)
+            deliveryTimeEnum = DeliveryTime.NOON;
+        else if(radioGroupDeliveryTime.getCheckedRadioButtonId()==R.id.radio_afternoon)
+            deliveryTimeEnum = DeliveryTime.AFTERNOON;
+        else{
+            Toast.makeText(this, "Please select a delivery period", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(radioGroupDeliveryLocation.getCheckedRadioButtonId()==R.id.radio_gate3)
+            deliveryGateEnum = DeliveryGate.GATE3;
+        else if(radioGroupDeliveryLocation.getCheckedRadioButtonId()==R.id.radio_gate4)
+            deliveryGateEnum = DeliveryGate.GATE4;
+        else{
+            Toast.makeText(this, "Please select a delivery Location", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // create and initialize the fields of the orderObject
         String userId = prefs.getString("uid", null);
         String restId = OrdersCart.getInstance().getCurrentResturantId();
+
         OrderModel orderObject = new OrderModel(
                 restId, userId
         );
+
         orderObject.setItemsList(OrdersCart.getInstance().getOrders());
         orderObject.confirm();
+
 
         // check if order is noon or afternoon delivery
         boolean isNoon=true; // noon
@@ -190,6 +224,14 @@ public class CartActivity extends AppCompatActivity {
             LocalDateTime afternoonTime = LocalDateTime.of(now.getYear(), now.getMonth(),
                     now.getDayOfMonth(), 13, 0);
 
+            if(orderObject.getDatetime().isAfter(noonTime)&&deliveryTimeEnum==DeliveryTime.NOON){
+                Toast.makeText(this, "Can't order for noon after 10 AM", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(orderObject.getDatetime().isAfter(afternoonTime)&&deliveryTimeEnum==DeliveryTime.AFTERNOON){
+                Toast.makeText(this, "Can't order for afternoon after 1 PM", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if(orderObject.getDatetime().isAfter(startTime)) {
                 if (orderObject.getDatetime().isBefore(noonTime)) {
                     isNoon = true;
@@ -205,18 +247,20 @@ public class CartActivity extends AppCompatActivity {
                 return;
             }
         }
-
-        // @TODO create an OrderModel object for every order
+        Log.d("debugcart", "D."+deliveryGateEnum.toString());
+        Log.d("debugcart", "T."+deliveryTimeEnum.toString());
+        // set data in firebase under the user auth
         databaseOrderRef = FirebaseDatabase.getInstance()
                 .getReference("orders").child(orderObject.getId());
         databaseOrderRef.child("userID").setValue(orderObject.getUserID());
         databaseOrderRef.child("restID").setValue(orderObject.getResturantID());
         databaseOrderRef.child("price").setValue(getTotal());
         databaseOrderRef.child("status").setValue(orderObject.getStatus().ordinal());
-        databaseOrderRef.child("address").setValue(userAddress);
         databaseOrderRef.child("datetime").setValue(orderObject.getDatetime().toString());
-        databaseOrderRef.child("delivery-period").setValue(Boolean.toString(isNoon));
+        databaseOrderRef.child("period").setValue(Integer.toString(deliveryTimeEnum.ordinal()));
+        databaseOrderRef.child("location").setValue(Integer.toString(deliveryGateEnum.ordinal()));
         databaseOrderRef = databaseOrderRef.child("items");
+        // extract items
         for(Item item:orderObject.getItemsList()){
             databaseOrderRef.child(item.getDishId()).setValue(item.getCount());
         }
@@ -242,12 +286,7 @@ public class CartActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String email = snapshot.getValue(String.class);
                 Log.d("fbdb", email);
-                User user = db.userDao().getUserByEmaiL(email);
-                userAddress = user.address;
-                addressTextView.setText(
-                        getString(R.string.cart_address)+
-                        user.address
-                );
+                User user = db.userDao().getUserByEmail(email);
             }
 
             @Override
@@ -270,4 +309,17 @@ public class CartActivity extends AppCompatActivity {
     private float getTotal(){
         return deliverySubTotal+dishesSubTotal;
     }
+
+    public static DeliveryTime getPeriodValueOf(int enumid){
+        if (enumid==0)
+            return DeliveryTime.NOON;
+        return DeliveryTime.AFTERNOON;
+    }
+
+    public static DeliveryGate getLocationValueOf(int enumid){
+        if (enumid==0)
+            return DeliveryGate.GATE3;
+        return DeliveryGate.GATE4;
+    }
+
 }

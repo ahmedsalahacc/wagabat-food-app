@@ -26,7 +26,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:layout_marginTop="40dp"
         android:maxHeight="360dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,7 +34,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.04">
+        app:layout_constraintVertical_bias="0.0">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/txt_title_delivery_subtotal"
-                android:text="item sub total"
+                android:text="0.0"
                 android:textColor="@color/dark"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -131,9 +131,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
-        app:layout_constraintVertical_bias="0.326"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout3"
+        app:layout_constraintVertical_bias="0.356">
 
         <Button
             android:id="@+id/btn_cancel"
@@ -159,24 +161,105 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/relativeLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/relativeLayout2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/relativeLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
+        app:layout_constraintVertical_bias="0.139">
+
+        <TextView
+            android:id="@+id/text_deliver_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/cart_delivery_time"
+            android:textColor="@color/dark"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/group_delivery_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/text_deliver_at"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_noon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/noon"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/wagba_orange"
+                tools:layout_editor_absoluteX="184dp"
+                tools:layout_editor_absoluteY="485dp" />
+
+            <RadioButton
+                android:id="@+id/radio_afternoon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/afternoon"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/wagba_orange"
+                tools:layout_editor_absoluteX="184dp"
+                tools:layout_editor_absoluteY="485dp" />
+        </RadioGroup>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/relativeLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.143"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/relativeLayout"
-        app:layout_constraintVertical_bias="0.327">
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintVertical_bias="0.105">
 
         <TextView
-            android:id="@+id/cart_address"
+            android:id="@+id/text_deliver_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:text="@string/cart_address"
+            android:textColor="@color/dark"
             android:textSize="16sp"
-            android:textColor="@color/dark" />
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/group_delivery_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/text_deliver_to"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_gate3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gate3"
+                android:backgroundTint="@color/wagba_orange"
+                android:textColor="@color/black"
+                tools:layout_editor_absoluteX="184dp"
+                tools:layout_editor_absoluteY="485dp" />
+
+            <RadioButton
+                android:id="@+id/radio_gate4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gate4"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/wagba_orange"
+                tools:layout_editor_absoluteX="184dp"
+                tools:layout_editor_absoluteY="485dp" />
+        </RadioGroup>
     </RelativeLayout>
 
 

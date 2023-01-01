@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,16 +35,19 @@ public class OrderHistory extends AppCompatActivity {
     List<OrderHistoryItem> orderHistoryItemsList;
     DatabaseReference dbOrdersRef;
     SharedPreferences sharedPref;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history);
         init();
-        listenToRTDatabaseChanges(); // @TODO don't forget to uncomment while testing
+        listenToRTDatabaseChanges();
     }
 
     private void init(){
+        progressDialog = new ProgressDialog(this);
+        progressDialogueSetter();
         recyclerView = findViewById(R.id.recyclerView);
         orderHistoryItemsList = new ArrayList<>();
         layoutManager = new LinearLayoutManager(this);
@@ -52,7 +58,8 @@ public class OrderHistory extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         sharedPref = getSharedPreferences(getResources().getString(R.string.shared_pref_name),
                 Context.MODE_PRIVATE);
-        dbOrdersRef = FirebaseDatabase.getInstance().getReference("users/"+sharedPref.getString("uid", null)+"/orders");
+        dbOrdersRef = FirebaseDatabase.getInstance()
+                .getReference("users/"+sharedPref.getString("uid", null)+"/orders");
     }
 
     private void listenToRTDatabaseChanges(){
@@ -61,23 +68,29 @@ public class OrderHistory extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 orderHistoryItemsList.clear();
                 DatabaseReference databaseOrdersRef;
-                Log.d("ohdbg","starting");
                 for(DataSnapshot each: snapshot.getChildren()){
                     String orderID = each.getKey();
                     databaseOrdersRef = FirebaseDatabase.getInstance()
                             .getReference("orders/"+orderID);
+                    Log.d("ohdbg","eachID: "+each.getKey());
                     databaseOrdersRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             Map<String, Object> result = (Map<String, Object>)snapshot.getValue();
-                            Log.d("ohdbg","eachid:"+orderID);
+                            Log.d("ohdbg","resobj:"+result);
                             OrderHistoryItem orderHistoryItem = new OrderHistoryItem(
                                     orderID,
-                                    result.get("datetime").toString(),
-                                    result.get("address").toString(),
+                                    CartActivity.getPeriodValueOf(
+                                    Integer.parseInt(result.get("period").toString())
+                                    ),
+                                    CartActivity.getLocationValueOf(
+                                            Integer.parseInt(result.get("location").toString())
+                                    )
+                                    ,
                                     OrderModel.mapNumberToStatusEnum(
                                             Integer.parseInt(result.get("status").toString())
-                                    )
+                                    ),
+                                    result.get("datetime").toString()
                             );
                             // check if order item already exists in the db
                             for(int i=0;i<orderHistoryItemsList.size();i++){
@@ -86,9 +99,14 @@ public class OrderHistory extends AppCompatActivity {
                                 }
                             }
                             orderHistoryItemsList.add(orderHistoryItem);
-                            Log.d("ohdbg","eachid:"+orderHistoryItemsList.toString());
+                            Collections.sort(orderHistoryItemsList, new Comparator<OrderHistoryItem>() {
+                                @Override
+                                public int compare(OrderHistoryItem orderHistoryItem, OrderHistoryItem t1) {
+                                    return t1.getDatetime().compareTo(orderHistoryItem.getDatetime());
+                                }
+                            });
                             adapter.notifyDataSetChanged();
-                            Log.d("ohdbg","eachid:"+adapter.getOrderHistoryItemList());
+                            progressDialog.dismiss();
                         }
 
                         @Override
@@ -104,5 +122,12 @@ public class OrderHistory extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void progressDialogueSetter(){
+        progressDialog.setMessage("Loading...");
+        progressDialog.setTitle("Loading Content");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
     }
 }

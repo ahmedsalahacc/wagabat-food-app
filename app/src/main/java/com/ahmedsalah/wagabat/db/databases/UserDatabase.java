@@ -10,7 +10,7 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import com.ahmedsalah.wagabat.db.dao.UserDao;
 import com.ahmedsalah.wagabat.db.entities.User;
 
-@Database(entities = {User.class}, version=1)
+@Database(entities = {User.class}, version=5)
 public abstract class UserDatabase extends RoomDatabase {
     public abstract UserDao userDao();
 }

@@ -78,15 +78,17 @@
         android:id="@+id/myDishes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="200dp"
+        android:layout_marginHorizontal="20dp"
         android:text="TextView"
-        android:textStyle="italic|bold"
         android:textColor="@color/black"
+        android:textStyle="italic|bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView19"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView19"
-        app:layout_constraintVertical_bias="0.071" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datetime"
+        app:layout_constraintVertical_bias="0.102" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -96,9 +98,10 @@
         android:layout_marginHorizontal="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myDishes"
-        app:layout_constraintVertical_bias="0.109" />
+        app:layout_constraintVertical_bias="0.135" />
 
     <TextView
         android:id="@+id/textView12"
@@ -130,12 +133,12 @@
         app:layout_constraintVertical_bias="0.47" />
 
     <TextView
-        android:textColor="@color/black"
-        android:textStyle="bold"
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/order_preparing"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView12"
         app:layout_constraintEnd_toStartOf="@+id/textView13"
         app:layout_constraintStart_toEndOf="@+id/textView12"
@@ -158,8 +161,8 @@
         android:id="@+id/dateTimeHolder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:layout_marginLeft="10dp"
+        android:text="TextView"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/orderDatetime"
         app:layout_constraintEnd_toEndOf="parent"
@@ -208,15 +211,30 @@
         app:layout_constraintVertical_bias="0.039" />
 
     <TextView
-        android:textColor="@color/black"
         android:id="@+id/priceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/textView19"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.146"
         app:layout_constraintStart_toEndOf="@+id/textView19"
         app:layout_constraintTop_toTopOf="@+id/textView19"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:gravity="left"
+        android:text="TextView"
+        android:textColor="@color/dark_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.033"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19"
+        app:layout_constraintVertical_bias="0.059" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,20 +8,19 @@ import androidx.room.PrimaryKey;
 public class User {
     @PrimaryKey(autoGenerate = true)
     public int uid;
-
+    @ColumnInfo
+    public String authid;
     @ColumnInfo
     public String name;
     @ColumnInfo
     public String mobile;
     @ColumnInfo
     public String email;
-    @ColumnInfo
-    public String address;
 
-    public User(String name, String email, String mobile, String address){
+    public User(String authid, String name, String email, String mobile){
+        this.authid = authid;
         this.name = name;
         this.email = email;
         this.mobile = mobile;
-        this.address = address;
     }
 }

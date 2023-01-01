@@ -2,6 +2,8 @@ package com.ahmedsalah.wagabat.models;
 
 import android.os.Build;
 
+import com.ahmedsalah.wagabat.activities.CartActivity;
+
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
@@ -22,12 +24,30 @@ public class OrderModel {
     private Status status;
     private ArrayList<Item> itemsList;
     private LocalDateTime datetime;
+    CartActivity.DeliveryGate deliveryGate;
+    CartActivity.DeliveryTime deliveryTime;
 
     public OrderModel(String resturantID, String userID){
         id = UUID.randomUUID().toString();
         status = Status.CREATED;
         this.userID = userID;
         this.resturantID = resturantID;
+    }
+
+    public void setDeliveryGate(CartActivity.DeliveryGate deliveryGate) {
+        this.deliveryGate = deliveryGate;
+    }
+
+    public void setDeliveryTime(CartActivity.DeliveryTime deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
+
+    public CartActivity.DeliveryGate getDeliveryGate() {
+        return deliveryGate;
+    }
+
+    public CartActivity.DeliveryTime getDeliveryTime() {
+        return deliveryTime;
     }
 
     public void setResturantID(String resturantID) {

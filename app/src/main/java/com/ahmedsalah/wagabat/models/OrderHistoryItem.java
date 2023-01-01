@@ -1,24 +1,53 @@
 package com.ahmedsalah.wagabat.models;
 
-public class OrderHistoryItem {
-    String orderID, orderDateTime;
-    OrderModel.Status orderStatus;
-    private String address;
+import com.ahmedsalah.wagabat.activities.CartActivity;
 
-    public OrderHistoryItem(String orderId, String orderDateTime, String address, OrderModel.Status orderStatus){
+public class OrderHistoryItem {
+    String orderID;
+    CartActivity.DeliveryTime deliveryTime;
+    CartActivity.DeliveryGate deliveryLocation;
+    String datetime;
+    OrderModel.Status orderStatus;
+
+    public OrderHistoryItem(String orderId,
+                            CartActivity.DeliveryTime deliveryTime,
+                            CartActivity.DeliveryGate deliveryLocation,
+                            OrderModel.Status orderStatus, String datetime){
         this.orderID = orderId;
-        this.orderDateTime = orderDateTime;
+        this.deliveryTime = deliveryTime;
+        this.deliveryLocation = deliveryLocation;
         this.orderStatus= orderStatus;
-        this.address = address;
+        this.datetime = datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDeliveryTime(CartActivity.DeliveryTime deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
+
+    public void setDeliveryLocation(CartActivity.DeliveryGate deliveryLocation) {
+        this.deliveryLocation = deliveryLocation;
+    }
+
+    public CartActivity.DeliveryTime getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public CartActivity.DeliveryGate getDeliveryLocation() {
+        return deliveryLocation;
     }
 
     public void setOrderID(String orderID) {
         this.orderID = orderID;
     }
 
-    public void setOrderDateTime(String orderDateTime) {
-        this.orderDateTime = orderDateTime;
-    }
 
     public void setOrderStatus(OrderModel.Status orderStatus) {
         this.orderStatus = orderStatus;
@@ -28,19 +57,10 @@ public class OrderHistoryItem {
         return orderID;
     }
 
-    public String getOrderDateTime() {
-        return orderDateTime;
-    }
 
     public OrderModel.Status getOrderStatus() {
         return orderStatus;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
-    public String getAddress() {
-        return address;
-    }
 }

@@ -15,13 +15,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 
 public class OrderTrackingActivity extends AppCompatActivity {
-    TextView orderIdView, datetimeView, restaurantView, periodView, myDishes, priceView;
+    TextView orderIdView, orderPeriod, restaurantView, periodView, dateTimeView, myDishes, priceView;
     ProgressBar progressBar;
     DatabaseReference orderDatabaseRef, restaurantDatabaseRef;
     final int PROGRESS_MAX=100;
@@ -37,9 +34,10 @@ public class OrderTrackingActivity extends AppCompatActivity {
 
     public void init(){
         orderIdView = findViewById(R.id.orderIDHolder);
-        datetimeView = findViewById(R.id.dateTimeHolder);
+        orderPeriod = findViewById(R.id.dateTimeHolder);
         restaurantView = findViewById(R.id.restaurantHolder);
         periodView = findViewById(R.id.periodHolder);
+        dateTimeView = findViewById(R.id.datetime);
         myDishes = findViewById(R.id.myDishes);
         priceView = findViewById(R.id.priceView);
         progressBar = findViewById(R.id.progressBar);
@@ -56,15 +54,12 @@ public class OrderTrackingActivity extends AppCompatActivity {
         }
         String oid = extras.getString("oid", "No ID found");
         orderIdView.setText(oid.substring(0,10));
-        String datetime = extras.getString("orderDatetime",
+        String period = extras.getString("delivery_period",
                 "No datetime");
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            LocalDateTime ldt = LocalDateTime.
-                    parse(datetime.replace('T',' ').substring(0,19), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            String newString = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(ldt); // 9:00
-            datetimeView.setText(newString);
-        }
-
+        orderPeriod.setText(period);
+        String datetimeString = extras.getString("datetime").replace("T"," ");
+        datetimeString = datetimeString.substring(0,datetimeString.length()-7);
+        dateTimeView.setText("Date Ordered:\t"+datetimeString);
         // set database references
         orderDatabaseRef = FirebaseDatabase
                 .getInstance()
@@ -73,19 +68,16 @@ public class OrderTrackingActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Map<String, Object> res = (Map<String, Object>)snapshot.getValue();
-                String deliveryPeriod = res.get("delivery-period").toString();
+                String deliveryLocation = CartActivity.getLocationValueOf(Integer.parseInt(res.get("location")
+                        .toString())).toString();
                 Map<String, Object> dishItems = (Map<String, Object>) res.get("items");
                 String price = res.get("price").toString();
                 String restId = res.get("restID").toString();
                 int status = Integer.parseInt(res.get("status").toString());
                 priceView.setText(
-                        getString(R.string.currency)+" "+price
+                        getString(R.string.currency)+" "+Float.toString(Float.parseFloat(price))
                 );
-                if(deliveryPeriod.equalsIgnoreCase("true")){
-                    periodView.setText("Noon (12PM)");
-                } else{
-                    periodView.setText("Afternoon (3PM)");
-                }
+                periodView.setText(deliveryLocation);
 
                 // control tracking
                 switch (status){

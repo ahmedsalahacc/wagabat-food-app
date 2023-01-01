@@ -1,5 +1,6 @@
 package com.ahmedsalah.wagabat.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ public class HomeFragment extends Fragment {
     LinearLayoutManager layoutManager;
     List<ResturantModel> resturantsList;
     DatabaseReference database;
+    ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +50,8 @@ public class HomeFragment extends Fragment {
     }
 
     public void init(){
+        progressDialog = new ProgressDialog(view.getContext());
+        progressDialogueSetter();
         resturantsList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.rest_recyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -79,6 +83,7 @@ public class HomeFragment extends Fragment {
                     resturantsList.add(rest);
                 }
                 adapter.notifyDataSetChanged();
+                progressDialog.dismiss();
             }
 
             @Override
@@ -86,5 +91,12 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(view.getContext(), ""+error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void progressDialogueSetter(){
+        progressDialog.setMessage("Loading...");
+        progressDialog.setTitle("Loading Content");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
     }
 }
