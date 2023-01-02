@@ -36,7 +36,8 @@ public class LoginFragment extends Fragment {
     TextView signUpTxt;
     ImageView loginWithGoogleImg;
     EditText emailField, passwordField;
-    String emailRegexPattern = "[a-zA-Z0-9]+@[a-z]+\\.+[a-z]+";
+//    String emailRegexPattern = "[a-zA-Z0-9]+@[a-z]+\\.+[a-z]+";
+    String emailRegexPattern = "[a-zA-Z0-9]+@\\.asu\\.edu\\.eg";
     ProgressDialog progressDialog;
     DatabaseReference dbRef;
     FirebaseAuth auth;
@@ -95,7 +96,7 @@ public class LoginFragment extends Fragment {
         boolean err = false;
 
         if(email.isEmpty() || !email.matches(emailRegexPattern)){
-            emailField.setError("Input must match the email format");
+            emailField.setError("Input must match the ASUENG email format");
             err = true;
         }
         if(password.isEmpty()){

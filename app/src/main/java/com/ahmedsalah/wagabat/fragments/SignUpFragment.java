@@ -36,7 +36,8 @@ public class SignUpFragment extends Fragment{
 
     Button btnSignUp;
     EditText nameField, emailField, passwordField, mobileField, rePasswordField, addressField;
-    String emailRegexPattern = "[a-zA-Z0-9]+@[a-z]+\\.+[a-z]+";
+//    String emailRegexPattern = "[a-zA-Z0-9]+@[a-z]+\\.+[a-z]+";
+    String emailRegexPattern = "[a-zA-Z0-9]+@eng\\.asu\\.edu\\.eg";
     ProgressDialog progressDialog;
     DatabaseReference dbRef;
     FirebaseAuth auth;
@@ -103,7 +104,7 @@ public class SignUpFragment extends Fragment{
         }
         if (!email.matches(emailRegexPattern)){
             isError=true;
-            emailField.setError("Email Pattern is incorrect or empty");
+            emailField.setError("Email Pattern is incorrect format (not asu.eng) or empty");
         }
         if(password.isEmpty()||password.length()<8){
             isError=true;
