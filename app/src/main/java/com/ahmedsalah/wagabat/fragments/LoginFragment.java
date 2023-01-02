@@ -37,7 +37,7 @@ public class LoginFragment extends Fragment {
     ImageView loginWithGoogleImg;
     EditText emailField, passwordField;
 //    String emailRegexPattern = "[a-zA-Z0-9]+@[a-z]+\\.+[a-z]+";
-    String emailRegexPattern = "[a-zA-Z0-9]+@\\.asu\\.edu\\.eg";
+    String emailRegexPattern = "[a-zA-Z0-9]+@eng\\.asu\\.edu\\.eg";
     ProgressDialog progressDialog;
     DatabaseReference dbRef;
     FirebaseAuth auth;
