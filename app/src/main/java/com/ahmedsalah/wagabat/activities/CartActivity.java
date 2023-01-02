@@ -48,11 +48,11 @@ public class CartActivity extends AppCompatActivity {
 
     float dishesSubTotal, deliverySubTotal;
 
-    public static enum DeliveryTime{
+    public enum DeliveryTime{
         NOON,
         AFTERNOON
     };
-    public static enum DeliveryGate{
+    public enum DeliveryGate{
         GATE3,
         GATE4
     };
@@ -91,8 +91,6 @@ public class CartActivity extends AppCompatActivity {
         // shared pref
         prefs = getSharedPreferences(getResources().getString(R.string.shared_pref_name),
                 Context.MODE_PRIVATE);
-        //setting data
-        setAddressData();
     }
 
     public void populateCart(){
@@ -146,7 +144,8 @@ public class CartActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
+                            Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("debugcart", error.getDetails());
                         }
                     });
                 }
@@ -154,7 +153,8 @@ public class CartActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("debugcart", error.getDetails());
             }
         });
 
@@ -214,7 +214,6 @@ public class CartActivity extends AppCompatActivity {
 
 
         // check if order is noon or afternoon delivery
-        boolean isNoon=true; // noon
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime noonTime = LocalDateTime.of(now.getYear(), now.getMonth(),
@@ -232,23 +231,7 @@ public class CartActivity extends AppCompatActivity {
                 Toast.makeText(this, "Can't order for afternoon after 1 PM", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(orderObject.getDatetime().isAfter(startTime)) {
-                if (orderObject.getDatetime().isBefore(noonTime)) {
-                    isNoon = true;
-                    Log.d("dtime", "noon");
-                } else if (orderObject.getDatetime().isBefore(afternoonTime)) {
-                    isNoon = false;
-                    Log.d("dtime", "afternoon");
-
-                }
-            }else{
-                Toast.makeText(this, "Cannot order after 1PM", Toast.LENGTH_SHORT).show();
-                Log.d("dtime", "can't");
-                return;
-            }
         }
-        Log.d("debugcart", "D."+deliveryGateEnum.toString());
-        Log.d("debugcart", "T."+deliveryTimeEnum.toString());
         // set data in firebase under the user auth
         databaseOrderRef = FirebaseDatabase.getInstance()
                 .getReference("orders").child(orderObject.getId());
@@ -276,25 +259,6 @@ public class CartActivity extends AppCompatActivity {
         replaceActivity(MainMenuActivity.class);
     }
 
-    private void setAddressData(){
-        String userId = prefs.getString("uid", null);
-        DatabaseReference emailRef = FirebaseDatabase.getInstance().getReference("users/"+userId+"/email");
-        UserDatabase db = Room.databaseBuilder(getApplicationContext(),
-                UserDatabase.class, "user-database").allowMainThreadQueries().build();
-        emailRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String email = snapshot.getValue(String.class);
-                Log.d("fbdb", email);
-                User user = db.userDao().getUserByEmail(email);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
     private void notifyTotalPriceChanged(){
         totalView.setText(Float.toString(getTotal()));
         itemSubTotalView.setText(Float.toString(dishesSubTotal));

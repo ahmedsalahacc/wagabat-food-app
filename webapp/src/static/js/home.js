@@ -176,20 +176,41 @@ function updateOrdersForRestaurant() {
     return returnVal;
   }
 
-  let firstTime = true;
+  async function getRequestedDishes(ordersArr) {
+    console.log("log:", ordersArr);
+    // let orderItem =
+    for (const [dishID, count] of Object.entries(
+      ordersArr[ordersArr.length - 1]["data"]["items"]
+    )) {
+      console.log(dishID, count);
+      const dishesRef = "dishes/" + dishID + "/name";
+      await get(child(ref(database), dishesRef)).then((snapshot) => {
+        if (snapshot.exists())
+          ordersArr[ordersArr.length - 1]["dishes"].push({
+            name: snapshot.val(),
+            count: count,
+          });
+      });
+    }
+    console.log("done", ordersArr);
+  }
   const restaurantRef = "resturants/" + restId;
   get(child(ref(database), restaurantRef))
-    .then((snapshot) => {
+    .then(async (snapshot) => {
       // do
       if (snapshot.exists()) {
         let orderIds = snapshot.val()["orders"];
 
         for (let orderId of Object.keys(orderIds)) {
-          getOrderData(orderId).then((data) => {
+          getOrderData(orderId).then(async (data) => {
             if (Number.parseInt(data["status"]) === 1) {
               activeOrders.push({ id: orderId, data: data });
+              activeOrders[activeOrders.length - 1]["dishes"] = [];
+              await getRequestedDishes(activeOrders);
             } else {
               allOrders.push({ id: orderId, data: data });
+              allOrders[allOrders.length - 1]["dishes"] = [];
+              await getRequestedDishes(allOrders);
             }
             console.log("allorders", allOrders);
             console.log("active orders", activeOrders);
@@ -205,14 +226,28 @@ function updateOrdersForRestaurant() {
     });
 }
 
-/**  */
+/**
+ * whent
+ */
 function updateActiveOrdersState() {
   let activeOrdersHTMLContainerNode =
     document.getElementById("active__container");
   let innerHTMLContainer = "";
   let collapseTracker = 1;
-  for (const each of activeOrders) {
-    // @TODO get dish items then do the rest
+  for (let i = 0; i < activeOrders.length; ++i) {
+    const each = activeOrders[i];
+    console.log("got each", each, each.dishes.length);
+    // get dishes
+    let dishesText = ``;
+    console.log("each", each.dishes, each.dishes.length);
+    for (const dish of each.dishes) {
+      console.log("dish", dish);
+      dishesText += `
+      <p> ${dish.name} X${dish.count} <p>
+      `;
+    }
+    dishesText += `</div>`;
+    // set the item's UI component
     innerHTMLContainer += `
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
@@ -245,6 +280,9 @@ function updateActiveOrdersState() {
                     each["data"]["status"]
                   )}
                 </p>
+                <p>
+                  <strong>Order:</strong> ${dishesText}
+                </p>
                 <button class="btn btn-danger btn-order-confirm" id="${
                   each["id"]
                 }">Confirm</button>
@@ -269,7 +307,17 @@ function updateAllOrdersState() {
   let ordersHistoryHTMLContainerNode =
     document.getElementById("orders__history");
   let innerHTMLContainer = "";
-  for (const each of allOrders) {
+  for (let i = 0; i < allOrders.length; i++) {
+    const each = allOrders[i];
+    let dishesText = ``;
+    console.log("each", each.dishes, each.dishes.length);
+    for (const dish of each.dishes) {
+      console.log("dish", dish);
+      dishesText += `
+      <p> ${dish.name} X${dish.count} <p>
+      `;
+    }
+    dishesText += `</div>`;
     // @TODO get dish items then do the rest
     innerHTMLContainer += `
     <div>
@@ -285,6 +333,7 @@ function updateAllOrdersState() {
         <div><strong>Location:</strong> ${convertLocationToString(
           each["data"]["location"]
         )}</div>
+        <div><strong>Orders:</strong> ${dishesText}</div>
         `;
 
     if (Number.parseInt(each["data"]["status"]) < 3)
