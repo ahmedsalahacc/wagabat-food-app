@@ -28,7 +28,9 @@ available restaurants. When a user clicks on a restaurant from the list, the
 restaurantActivity opens, displaying a recycler view with a list of available dishes. When a
 user clicks on a dish, the dishorder activity opens, showing the image, description, and
 price of the dish, as well as options for placing an order.
+
 ![image](https://github.com/ahmedsalahacc/wagabat-food-app/assets/51268352/5e72b2d3-13a9-441d-9431-f285a6ce32bf)
+
 The cart activity, which is accessed via the cart button,
 displays a summary of the selected items, along with
 the total cost of the items and their delivery. It also
